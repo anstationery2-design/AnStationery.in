@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE.name,
   },
-  metadataBase: new URL("https://crayon2couture.in"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://anstationery.in"),
 };
 
 export default function RootLayout({
