@@ -1,6 +1,5 @@
 {
   "framework": "nextjs",
-  "rootDirectory": "/",
   "buildCommand": "npm run build",
   "installCommand": "npm install && npm run db:generate"
 }
