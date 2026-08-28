@@ -38,6 +38,14 @@ export const metadata: Metadata = {
     "India",
     "Crayon2Couture",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-128.png", sizes: "128x128", type: "image/png" },
+    ],
+    shortcut: "/favicon-32.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: `${SITE.name} \u2014 ${SITE.tagline}`,
     description: SITE.description,
