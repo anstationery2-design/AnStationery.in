@@ -41,9 +41,6 @@ export function Header() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 lg:flex-none">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-yellow font-display text-lg font-black text-ink shadow-sm">
-            A
-          </span>
           <span className="font-display text-base font-black tracking-tight sm:text-xl">
             AN <span className="text-yellow-deep">Stationery</span>
           </span>
