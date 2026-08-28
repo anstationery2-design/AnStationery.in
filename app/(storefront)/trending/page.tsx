@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Trending Now",
-  description: "What everyone is loving this week at Crayon2Couture.",
+  description: "What everyone is loving this week at AN Stationery.",
 };
 
 export default async function TrendingPage() {

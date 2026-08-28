@@ -3,7 +3,7 @@ import { STATS } from "@/lib/constants";
 
 export const metadata = {
   title: "About Us",
-  description: "The story behind Crayon2Couture.",
+  description: "The story behind AN Stationery.",
 };
 
 export default function AboutPage() {
@@ -13,12 +13,12 @@ export default function AboutPage() {
         our little story
       </p>
       <h1 className="mt-1 font-display text-4xl font-black tracking-tight sm:text-5xl">
-        About Crayon2Couture
+        About AN Stationery
       </h1>
 
       <div className="mt-8 space-y-5 text-lg leading-relaxed text-ink-soft">
         <p>
-          Crayon2Couture started with a simple idea: everyday things should make
+          AN Stationery started with a simple idea: everyday things should make
           you smile. We hunt for the cutest, most aesthetic stationery and gifts
           and bring them together in one happy little shop.
         </p>

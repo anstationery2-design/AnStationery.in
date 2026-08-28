@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 const ADMIN_COOKIE = "c2c_admin_session";
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.AUTH_SECRET || "crayon2couture-jwt-secret-change-me-2026",
+  process.env.AUTH_SECRET || "anstationery-jwt-secret-change-me-2026",
 );
 const PUBLIC_ADMIN = ["/admin/login"];
 

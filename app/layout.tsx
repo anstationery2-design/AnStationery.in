@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "aesthetic",
     "cute",
     "India",
-    "Crayon2Couture",
+    "An Stationery",
   ],
   icons: {
     icon: [

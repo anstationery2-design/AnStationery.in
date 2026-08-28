@@ -1,4 +1,4 @@
-# Crayon2Couture
+# AN Stationery
 
 Cute, premium, gift-worthy stationery e-commerce store + Admin Dashboard.
 White-dominant design with strategic yellow promotional banners, pastel accents,
@@ -45,7 +45,7 @@ Open http://localhost:3000
 ### Admin Dashboard
 Open http://localhost:3000/admin/login
 
-**Demo credentials:** `admin@crayon2couture.in` / `admin123`
+**Demo credentials:** `Anstationery2@gmail.com` / `ANstationery@123`
 (override with `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `AUTH_SECRET` env vars)
 
 The admin lets you manage everything:

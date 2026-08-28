@@ -42,10 +42,10 @@ export function UserLoginForm() {
       <div className="w-full max-w-md">
         <Link href="/" className="mb-6 flex items-center justify-center gap-2">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-yellow font-display text-xl font-black text-ink">
-            C
+            A
           </span>
           <span className="font-display text-2xl font-black tracking-tight">
-            Crayon<span className="text-yellow-deep">2</span>Couture
+            AN <span className="text-yellow-deep">Stationery</span>
           </span>
         </Link>
 

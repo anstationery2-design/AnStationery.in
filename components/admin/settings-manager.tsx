@@ -94,7 +94,7 @@ export function SettingsManager() {
       <div className="rounded-2xl border border-line bg-cream p-5 text-sm">
         <h3 className="mb-2 font-display font-black">Demo Admin Credentials</h3>
         <p className="text-muted">Email: <span className="font-semibold text-ink">{SITE.email}</span></p>
-        <p className="text-muted">Default login: <span className="font-semibold text-ink">admin@crayon2couture.in</span> / <span className="font-semibold text-ink">admin123</span></p>
+        <p className="text-muted">Default login: <span className="font-semibold text-ink">Anstationery2@gmail.com</span> / <span className="font-semibold text-ink">ANstationery@123</span></p>
         <p className="mt-2 text-xs text-muted">
           Override with ADMIN_EMAIL, ADMIN_PASSWORD, AUTH_SECRET env vars in production.
         </p>

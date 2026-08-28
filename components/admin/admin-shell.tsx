@@ -120,10 +120,10 @@ function SidebarContent({
         className="flex items-center gap-2 border-b border-line px-5 py-4"
       >
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-yellow font-display text-lg font-black text-ink">
-          C
+          A
         </span>
         <span className="font-display text-base font-black sm:text-lg">
-          Crayon<span className="text-yellow-deep">2</span>Couture
+          AN <span className="text-yellow-deep">Stationery</span>
         </span>
       </Link>
 

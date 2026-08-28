@@ -10,7 +10,7 @@ const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "Anstationery2@gmail.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "ANstationery@123";
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.AUTH_SECRET || "crayon2couture-jwt-secret-change-me-2026",
+  process.env.AUTH_SECRET || "anstationery-jwt-secret-change-me-2026",
 );
 
 // --- Types ---

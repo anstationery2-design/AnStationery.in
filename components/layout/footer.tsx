@@ -16,10 +16,10 @@ export function Footer() {
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
               <span className="grid h-9 w-9 place-items-center rounded-xl bg-yellow font-display text-lg font-black text-ink">
-                C
+                A
               </span>
               <span className="font-display text-xl font-black tracking-tight">
-                Crayon<span className="text-yellow-deep">2</span>Couture
+                AN <span className="text-yellow-deep">Stationery</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">

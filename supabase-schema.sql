@@ -1,5 +1,5 @@
 -- ============================================================
--- CRAYON2COUTURE / ANSTATIONERY — COMPLETE SUPABASE SCHEMA + SEED
+-- AN STATIONERY — COMPLETE SUPABASE SCHEMA + SEED
 -- ============================================================
 -- HOW TO USE:
 --   1. Open Supabase Dashboard → SQL Editor

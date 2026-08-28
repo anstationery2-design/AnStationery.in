@@ -1,13 +1,13 @@
 export const SITE = {
-  name: "Crayon2Couture",
+  name: "AN Stationery",
   tagline: "Small Things. Big Smiles.",
   description:
     "Discover trending, aesthetic and gift-worthy stationery made to brighten your everyday moments.",
-  email: "hello@crayon2couture.in",
+  email: "hello@anstationery.in",
   phone: "+91 98765 43210",
   whatsapp: "919876543210",
-  instagram: "https://instagram.com/crayon2couture",
-  instagramHandle: "@crayon2couture",
+  instagram: "https://instagram.com/anstationery",
+  instagramHandle: "@anstationery",
   address: "Mumbai, India",
   freeShippingThreshold: 499,
   shippingFee: 49,

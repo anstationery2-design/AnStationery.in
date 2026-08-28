@@ -1,7 +1,7 @@
-# Crayon2Couture — Full-Stack E-Commerce Build Plan
+# AN Stationery — Full-Stack E-Commerce Build Plan
 
 > Cute, premium, gift-worthy stationery e-commerce store + Admin Dashboard.
-> Visual reference: existing prototype (https://crayon2couture.netlify.app/) + MUJI India (https://muji.in/) for clean, modern minimalism.
+> Visual reference: existing prototype + MUJI India (https://muji.in/) for clean, modern minimalism.
 
 ---
 

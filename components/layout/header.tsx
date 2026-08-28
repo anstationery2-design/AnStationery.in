@@ -42,10 +42,10 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 lg:flex-none">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-yellow font-display text-lg font-black text-ink shadow-sm">
-            C
+            A
           </span>
           <span className="font-display text-base font-black tracking-tight sm:text-xl">
-            Crayon<span className="text-yellow-deep">2</span>Couture
+            AN <span className="text-yellow-deep">Stationery</span>
           </span>
         </Link>
 
@@ -145,7 +145,7 @@ export function Header() {
           <div className="absolute left-0 top-0 h-full w-72 max-w-[80%] bg-white p-5 shadow-2xl">
             <div className="mb-6 flex items-center justify-between">
               <span className="font-display text-lg font-black">
-                Crayon<span className="text-yellow-deep">2</span>Couture
+                AN <span className="text-yellow-deep">Stationery</span>
               </span>
               <button
                 onClick={() => setMobileOpen(false)}

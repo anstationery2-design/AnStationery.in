@@ -5,7 +5,7 @@ export function WhatsAppButton() {
   return (
     <a
       href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(
-        "Hi Crayon2Couture! I have a question about your products.",
+        "Hi AN Stationery! I have a question about your products.",
       )}`}
       target="_blank"
       rel="noopener noreferrer"
