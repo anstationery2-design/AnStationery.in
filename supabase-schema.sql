@@ -1,5 +1,5 @@
 -- ============================================================
--- CRAYON2COUTURE — COMPLETE SUPABASE SCHEMA + SEED DATA
+-- CRAYON2COUTURE / ANSTATIONERY — COMPLETE SUPABASE SCHEMA + SEED
 -- ============================================================
 -- HOW TO USE:
 --   1. Open Supabase Dashboard → SQL Editor
@@ -228,6 +228,26 @@ CREATE POLICY "anon_all_site_config"  ON site_config   FOR ALL USING (TRUE) WITH
 CREATE POLICY "anon_no_users"         ON users         FOR ALL USING (FALSE) WITH CHECK (FALSE);
 
 -- ============================================================
+-- 6b. EXPLICIT GRANTS
+-- ============================================================
+-- The app uses the Supabase publishable (anon) key from the browser
+-- bundle for BOTH storefront reads AND server-side admin CRUD, and it
+-- calls create_order() via rpc(). Without these grants the anon role
+-- would silently get "permission denied" on tables, sequences, or the
+-- RPC even though the RLS policies above allow the rows.
+--   >> This matches the current app architecture (works out of the box).
+--   >> To HARDEN for production, switch admin writes + create_order to the
+--      service_role key and drop the anon INSERT/UPDATE/DELETE grants below.
+-- ============================================================
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL  ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL  ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL  ON ALL FUNCTIONS IN SCHEMA public TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
+
+-- ============================================================
 -- 7. CREATE_ORDER RPC (atomic order + stock decrement)
 -- ============================================================
 CREATE OR REPLACE FUNCTION create_order(
@@ -255,7 +275,7 @@ DECLARE
   v_primary_url TEXT;
 BEGIN
   -- Generate order number
-  v_order_number := 'CC-' || LPAD((EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000)::TEXT, 6, '0') || LPAD((RANDOM() * 90 + 10)::INT::TEXT, 2, '0');
+  v_order_number := 'AN-' || LPAD((EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000)::TEXT, 6, '0') || LPAD((RANDOM() * 90 + 10)::INT::TEXT, 2, '0');
 
   -- Validate stock and calculate subtotal
   FOR v_line IN SELECT * FROM jsonb_array_elements(p_lines)
@@ -335,7 +355,7 @@ BEGIN
     'createdAt',       NOW()
   );
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ============================================================
 -- 8. SEED DATA
@@ -501,22 +521,30 @@ INSERT INTO reviews (name, city, rating, text, product, is_active) VALUES
 
 -- 8f. SITE CONFIG
 INSERT INTO site_config (key, value) VALUES
-('name',                  'Crayon2Couture'),
+('name',                  'AnStationery'),
 ('tagline',               'Small Things. Big Smiles.'),
 ('description',           'Discover trending, aesthetic and gift-worthy stationery made to brighten your everyday moments.'),
-('email',                 'hello@crayon2couture.in'),
+('email',                 'hello@anstationery.in'),
 ('phone',                 '+91 98765 43210'),
 ('whatsapp',              '919876543210'),
-('instagram',             'https://instagram.com/crayon2couture'),
-('instagramHandle',       '@crayon2couture'),
+('instagram',             'https://instagram.com/anstationery'),
+('instagramHandle',       '@anstationery'),
 ('address',               'Mumbai, India'),
 ('freeShippingThreshold', '499'),
 ('shippingFee',           '49');
 
 -- ============================================================
 -- DONE! Your database is ready.
--- Tables: categories, products, product_images, orders,
+-- Tables: users, categories, products, product_images, orders,
 --         order_items, shipments, banners, reviews, site_config
--- RPC:    create_order() for atomic checkout
--- RLS:    Permissive (demo). Restrict for production.
+-- RPC:    create_order() for atomic checkout (SECURITY DEFINER,
+--         pinned search_path, grants applied for anon calls)
+-- RLS:    Permissive anon policies + explicit grants so the app's
+--         publishable-key calls work out of the box.
+-- Storage: not required — image uploads are written to the server's
+--         local /public/uploads folder (see app/api/admin/upload).
+--
+-- NOTE: for production, move admin writes + create_order to the
+-- service_role key and drop the anon INSERT/UPDATE/DELETE rights
+-- (keep only anon SELECT for the storefront).
 -- ============================================================
