@@ -67,6 +67,11 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-background font-sans text-ink">
         {children}
+        {/* AI Chatbot (ApnaAI) — embed script per vendor instructions */}
+        <script
+          src="https://apnaai.online/chatBot.js"
+          data-owner-id="usr_140733829714281731"
+        />
       </body>
     </html>
   );
