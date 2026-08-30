@@ -16,6 +16,18 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<{
+    name: string;
+    email: string;
+    image?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((d) => setUser(d?.user ?? null))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -84,11 +96,20 @@ export function Header() {
             <Search className="h-5 w-5" />
           </button>
           <Link
-            href="/login"
-            className="hidden h-10 w-10 place-items-center rounded-full hover:bg-cream sm:grid"
+            href={user ? "/account" : "/login"}
+            className="hidden h-10 w-10 place-items-center overflow-hidden rounded-full hover:bg-cream sm:grid"
             aria-label="Account"
           >
-            <User className="h-5 w-5" />
+            {user?.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={user.image}
+                alt={user.name}
+                className="h-full w-full rounded-full object-cover"
+              />
+            ) : (
+              <User className="h-5 w-5" />
+            )}
           </Link>
           <button
             className="relative grid h-10 w-10 place-items-center rounded-full hover:bg-cream"
@@ -176,6 +197,14 @@ export function Header() {
                 >
                   <Heart className="h-4 w-4 text-yellow-deep" /> Chat on WhatsApp
                 </a>
+                <Link
+                  href={user ? "/account" : "/login"}
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-2 flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-sm"
+                >
+                  <User className="h-4 w-4 text-yellow-deep" />{" "}
+                  {user ? "My Account" : "Sign in / Account"}
+                </Link>
               </div>
             </div>
           </div>,
