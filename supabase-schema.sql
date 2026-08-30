@@ -11,6 +11,7 @@
 -- 0. CLEANUP (idempotent — safe to re-run)
 DROP TABLE IF EXISTS site_config CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS banners CASCADE;
 DROP TABLE IF EXISTS shipments CASCADE;
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
@@ -442,19 +443,19 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 -- p2: Pastel Dream Planner
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1503676263721-b1a42a1f5f0e?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 2', 1, FALSE),
+((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 3', 2, FALSE);
 
 -- p3: Cute Stationery Gift Box
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1503676263721-b1a42a1f5f0e?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1583485088034-694b469c0859?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 3', 2, FALSE),
+((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 2', 1, FALSE),
+((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 3', 2, FALSE),
 ((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 4', 3, FALSE);
 
 -- p4: Rainbow Gel Pen Set
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1583485088034-694b469c0859?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 1', 0, TRUE),
+((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 3', 2, FALSE);
 
@@ -462,13 +463,13 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1503676263721-b1a42a1f5f0e?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 3', 2, FALSE);
+((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 3', 2, FALSE);
 
 -- p6: Mini Doodle Notebook
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1503454537195-1dc81782c7c1?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 3', 2, FALSE);
+((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 3', 2, FALSE);
 
 -- p7: Cloud Washi Tape
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
@@ -479,12 +480,12 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1583485088034-694b469c0859?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 3', 2, FALSE);
+((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 3', 2, FALSE);
 
 -- p9: Cozy Desk Organiser Set
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1503454537195-1dc81782c7c1?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1503676263721-b1a42a1f5f0e?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 2', 1, FALSE),
+((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 1', 0, TRUE),
+((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 3', 2, FALSE);
 
 -- p10: Birthday Surprise Gift Hamper
@@ -492,19 +493,19 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 3', 2, FALSE),
-((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1583485088034-694b469c0859?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 4', 3, FALSE);
+((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 4', 3, FALSE);
 
 -- p11: Mint Green Pencil Pouch
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1503676263721-b1a42a1f5f0e?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1503454537195-1dc81782c7c1?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 2', 1, FALSE),
+((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 1', 0, TRUE),
+((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 3', 2, FALSE);
 
 -- p12: Sunshine Sticky Note Bundle
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1503454537195-1dc81782c7c1?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 3', 2, FALSE);
+((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 3', 2, FALSE);
 
 -- 8d. BANNERS
 INSERT INTO banners (title, subtitle, button_text, button_url, variant, is_active, sort_order) VALUES
@@ -541,10 +542,50 @@ INSERT INTO site_config (key, value) VALUES
 --         pinned search_path, grants applied for anon calls)
 -- RLS:    Permissive anon policies + explicit grants so the app's
 --         publishable-key calls work out of the box.
--- Storage: not required — image uploads are written to the server's
---         local /public/uploads folder (see app/api/admin/upload).
+-- Storage: product images are stored in a public Supabase Storage
+--         bucket ("product-images"). ONCE per project, run the block
+--         below to create the bucket + RLS policies. Without it the
+--         admin image uploader returns HTTP 500.
 --
 -- NOTE: for production, move admin writes + create_order to the
 -- service_role key and drop the anon INSERT/UPDATE/DELETE rights
 -- (keep only anon SELECT for the storefront).
 -- ============================================================
+
+-- ============================================================
+-- 9. STORAGE: PRODUCT IMAGES (run once)
+--    Enables app/api/admin/upload → Supabase Storage, so uploads
+--    persist on Vercel (no local disk). Paste into SQL Editor + Run.
+-- ============================================================
+
+-- Public bucket (id + name both "product-images").
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES (
+  'product-images',
+  'product-images',
+  true,
+  5242880,
+  ARRAY['image/jpeg','image/png','image/webp','image/gif']
+)
+ON CONFLICT (id) DO UPDATE
+SET public = true,
+    file_size_limit = 5242880,
+    allowed_mime_types = ARRAY['image/jpeg','image/png','image/webp','image/gif'];
+
+-- Allow the app's publishable (anon) key to upload, read and manage
+-- objects inside the product-images bucket.
+CREATE POLICY "product_images_insert" ON storage.objects
+  FOR INSERT TO anon, authenticated
+  WITH CHECK (bucket_id = 'product-images');
+
+CREATE POLICY "product_images_select" ON storage.objects
+  FOR SELECT TO anon, authenticated
+  USING (bucket_id = 'product-images');
+
+CREATE POLICY "product_images_update" ON storage.objects
+  FOR UPDATE TO anon, authenticated
+  USING (bucket_id = 'product-images');
+
+CREATE POLICY "product_images_delete" ON storage.objects
+  FOR DELETE TO anon, authenticated
+  USING (bucket_id = 'product-images');
