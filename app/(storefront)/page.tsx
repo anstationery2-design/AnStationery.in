@@ -7,6 +7,7 @@ import { Benefits } from "@/components/home/benefits";
 import { Reviews } from "@/components/home/reviews";
 import { InstagramSection } from "@/components/home/instagram";
 import { ProductSection } from "@/components/products/product-section";
+import { WhatsAppChatButton } from "@/components/layout/whatsapp-chat-button";
 import {
   getActiveBanners,
   getActiveReviews,
@@ -104,6 +105,9 @@ export default async function Home() {
       <Reviews reviews={reviews} />
       <Benefits />
       <InstagramSection />
+
+      {/* WhatsApp chat — home page only */}
+      <WhatsAppChatButton />
     </>
   );
 }
