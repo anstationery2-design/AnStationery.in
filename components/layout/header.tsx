@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { useCart } from "@/components/cart/cart-context";
@@ -132,51 +133,54 @@ export function Header() {
         </div>
       )}
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-ink/50 backdrop-blur-sm"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="absolute left-0 top-0 flex h-full w-80 max-w-[85%] flex-col overflow-y-auto bg-yellow-soft p-5 shadow-2xl">
-            <div className="mb-6 flex items-center justify-between">
-              <span className="font-display text-lg font-black">
-                AN <span className="text-yellow-deep">Stationery</span>
-              </span>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="grid h-9 w-9 place-items-center rounded-full bg-white text-ink shadow-sm hover:bg-cream"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-            <nav className="flex flex-col gap-2">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
+      {/* Mobile drawer — rendered via portal to <body> so the header's
+          backdrop-blur doesn't trap the fixed overlay to the header box */}
+      {mobileOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div
+              className="absolute inset-0 bg-ink/50 backdrop-blur-sm"
+              onClick={() => setMobileOpen(false)}
+            />
+            <div className="absolute left-0 top-0 flex h-full w-80 max-w-[85%] flex-col overflow-y-auto bg-yellow-soft p-5 shadow-2xl">
+              <div className="mb-6 flex items-center justify-between">
+                <span className="font-display text-lg font-black">
+                  AN <span className="text-yellow-deep">Stationery</span>
+                </span>
+                <button
                   onClick={() => setMobileOpen(false)}
-                  className="rounded-xl bg-white px-4 py-3 text-base font-bold text-ink shadow-sm transition hover:bg-yellow hover:text-ink"
+                  className="grid h-9 w-9 place-items-center rounded-full bg-white text-ink shadow-sm hover:bg-cream"
+                  aria-label="Close menu"
                 >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-            <div className="mt-6 border-t border-yellow-deep/30 pt-4">
-              <a
-                href={`https://wa.me/${SITE.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-sm"
-              >
-                <Heart className="h-4 w-4 text-yellow-deep" /> Chat on WhatsApp
-              </a>
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <nav className="flex flex-col gap-2">
+                {NAV_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-xl bg-white px-4 py-3 text-base font-bold text-ink shadow-sm transition hover:bg-yellow hover:text-ink"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+              <div className="mt-6 border-t border-yellow-deep/30 pt-4">
+                <a
+                  href={`https://wa.me/${SITE.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-sm"
+                >
+                  <Heart className="h-4 w-4 text-yellow-deep" /> Chat on WhatsApp
+                </a>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </header>
   );
 }
