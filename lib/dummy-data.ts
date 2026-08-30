@@ -200,7 +200,7 @@ export const products: Product[] = [
     createdAt: "2026-08-10T00:00:00.000Z",
     imageIds: [
       "1611532736597-de2d4265fba3",
-      "1635274322629-90e95c4b5f6a",
+      "1513542789411-b6a5d4f31634",
       "1503676263721-b1a42a1f5f0e",
     ],
   }),
@@ -250,7 +250,7 @@ export const products: Product[] = [
     reviewCount: 73,
     createdAt: "2026-07-25T00:00:00.000Z",
     imageIds: [
-      "1635274322629-90e95c4b5f6a",
+      "1513542789411-b6a5d4f31634",
       "1611532736597-de2d4265fba3",
     ],
   }),
@@ -379,7 +379,7 @@ export const products: Product[] = [
     reviewCount: 22,
     createdAt: "2026-08-14T00:00:00.000Z",
     imageIds: [
-      "1635274322629-90e95c4b5f6a",
+      "1513542789411-b6a5d4f31634",
       "1611532736597-de2d4265fba3",
       "1503454537195-1dc81782c7c1",
     ],

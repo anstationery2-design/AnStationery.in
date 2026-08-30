@@ -37,7 +37,15 @@ export function Categories({ cards }: { cards: CategoryCard[] }) {
         {cards.map((c) => (
           <Link
             key={`${c.id}-${c.slug}`}
-            href={c.slug === "shop" ? "/shop" : `/${c.slug}`}
+            href={
+              c.slug === "shop"
+                ? "/shop"
+                : c.slug === "trending"
+                  ? "/trending"
+                  : c.slug === "new"
+                    ? "/new"
+                    : `/category/${c.slug}`
+            }
             className="group flex flex-col items-center gap-3 rounded-2xl border border-line bg-white px-4 py-6 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <span

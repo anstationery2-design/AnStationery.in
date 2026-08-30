@@ -461,7 +461,7 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 -- p5: Kawaii Sticker Pack
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 ((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1635274322629-90e95c4b5f6a?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 2', 1, FALSE),
+((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1503676263721-b1a42a1f5f0e?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 3', 2, FALSE);
 
 -- p6: Mini Doodle Notebook
@@ -472,7 +472,7 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 
 -- p7: Cloud Washi Tape
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='cloud-washi-tape-collection'), 'https://images.unsplash.com/photo-1635274322629-90e95c4b5f6a?auto=format&fit=crop&w=900&q=80', 'Cloud Washi Tape view 1', 0, TRUE),
+((SELECT id FROM products WHERE slug='cloud-washi-tape-collection'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Cloud Washi Tape view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='cloud-washi-tape-collection'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Cloud Washi Tape view 2', 1, FALSE);
 
 -- p8: Star Dust Highlighters
@@ -502,7 +502,7 @@ INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
 
 -- p12: Sunshine Sticky Note Bundle
 INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1635274322629-90e95c4b5f6a?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 1', 0, TRUE),
+((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 1', 0, TRUE),
 ((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 2', 1, FALSE),
 ((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1503454537195-1dc81782c7c1?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 3', 2, FALSE);
 

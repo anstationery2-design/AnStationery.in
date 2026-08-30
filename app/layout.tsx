@@ -28,6 +28,15 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
+  authors: [
+    {
+      name: "dev.rohit.jadhav",
+      url: "https://www.instagram.com/dev.rohit.jadhav",
+    },
+  ],
+  creator: "dev.rohit.jadhav",
+  generator: "AN Stationery by dev.rohit.jadhav",
+  robots: { index: true, follow: true },
   keywords: [
     "stationery",
     "gifts",
@@ -37,6 +46,7 @@ export const metadata: Metadata = {
     "cute",
     "India",
     "An Stationery",
+    "developed by dev.rohit.jadhav",
   ],
   icons: {
     icon: [
@@ -66,6 +76,23 @@ export default function RootLayout({
       className={`${jakarta.variable} ${inter.variable} ${caveat.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-background font-sans text-ink">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "AN Stationery",
+              url: process.env.NEXT_PUBLIC_APP_URL || "https://anstationery.in",
+              author: {
+                "@type": "Person",
+                name: "dev.rohit.jadhav",
+                url: "https://www.instagram.com/dev.rohit.jadhav",
+              },
+              creator: "dev.rohit.jadhav",
+            }),
+          }}
+        />
         {children}
       </body>
     </html>
