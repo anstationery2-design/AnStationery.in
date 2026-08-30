@@ -5,6 +5,7 @@ import type { Product } from "@/types";
 
 export function Hero({ products: heroProducts }: { products: Product[] }) {
   if (heroProducts.length === 0) return null;
+  const [a, b, c] = heroProducts;
 
   return (
     <section className="relative overflow-hidden bg-dots">
@@ -76,35 +77,41 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
         {/* Visual cluster */}
         <div className="relative hidden h-[420px] lg:block">
           {/* main card */}
-          <div className="tape absolute left-1/2 top-1/2 h-72 w-56 -translate-x-1/2 -translate-y-1/2 -rotate-3 overflow-hidden rounded-2xl border-4 border-white bg-cream shadow-xl">
-            <Image
-              src={heroProducts[0].images[0].url}
-              alt={heroProducts[0].name}
-              fill
-              sizes="(max-width:1024px) 0px, 224px"
-              className="object-cover"
-              priority
-            />
-          </div>
+          {a && (
+            <div className="tape absolute left-1/2 top-1/2 h-72 w-56 -translate-x-1/2 -translate-y-1/2 -rotate-3 overflow-hidden rounded-2xl border-4 border-white bg-cream shadow-xl">
+              <Image
+                src={a.images[0]?.url ?? ""}
+                alt={a.name}
+                fill
+                sizes="(max-width:1024px) 0px, 224px"
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
           {/* secondary cards */}
-          <div className="absolute left-2 top-6 h-40 w-32 rotate-[-8deg] overflow-hidden rounded-xl border-4 border-white bg-cream shadow-lg animate-float">
-            <Image
-              src={heroProducts[1].images[0].url}
-              alt={heroProducts[1].name}
-              fill
-              sizes="128px"
-              className="object-cover"
-            />
-          </div>
-          <div className="absolute bottom-4 right-2 h-44 w-36 rotate-[7deg] overflow-hidden rounded-xl border-4 border-white bg-cream shadow-lg animate-float-slow">
-            <Image
-              src={heroProducts[2].images[0].url}
-              alt={heroProducts[2].name}
-              fill
-              sizes="144px"
-              className="object-cover"
-            />
-          </div>
+          {b && (
+            <div className="absolute left-2 top-6 h-40 w-32 rotate-[-8deg] overflow-hidden rounded-xl border-4 border-white bg-cream shadow-lg animate-float">
+              <Image
+                src={b.images[0]?.url ?? ""}
+                alt={b.name}
+                fill
+                sizes="128px"
+                className="object-cover"
+              />
+            </div>
+          )}
+          {c && (
+            <div className="absolute bottom-4 right-2 h-44 w-36 rotate-[7deg] overflow-hidden rounded-xl border-4 border-white bg-cream shadow-lg animate-float-slow">
+              <Image
+                src={c.images[0]?.url ?? ""}
+                alt={c.name}
+                fill
+                sizes="144px"
+                className="object-cover"
+              />
+            </div>
+          )}
           {/* doodles */}
           <span className="absolute right-10 top-2 text-3xl animate-wiggle">{"\u2b50"}</span>
           <span className="absolute left-6 bottom-16 text-3xl">{"\u2728"}</span>
