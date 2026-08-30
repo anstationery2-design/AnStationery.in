@@ -13,7 +13,6 @@ export function UserLoginForm() {
   const error = params.get("error");
   const [session, setSession] = useState<{
     user: { name: string; email: string; image?: string } | null;
-    admin: { name: string; email: string } | null;
   } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -82,19 +81,6 @@ export function UserLoginForm() {
             </div>
           )}
 
-          {session?.admin && (
-            <div className="mb-4 rounded-xl bg-yellow-soft px-4 py-4 text-center">
-              <p className="font-semibold">Admin: {session.admin.name}</p>
-              <p className="text-xs text-muted">{session.admin.email}</p>
-              <Link
-                href="/admin/dashboard"
-                className="mt-2 inline-block rounded-full bg-ink px-5 py-2 text-sm font-bold text-white hover:bg-yellow hover:text-ink"
-              >
-                Go to Dashboard
-              </Link>
-            </div>
-          )}
-
           {!session?.user && (
             <>
               <a
@@ -146,10 +132,10 @@ export function UserLoginForm() {
 
           <div className="mt-5 border-t border-line pt-4 text-center">
             <Link
-              href="/admin/login"
+              href="/account"
               className="text-xs font-semibold text-muted hover:text-yellow-deep"
             >
-              Admin login {"\u2192"}
+              View my account {"\u2192"}
             </Link>
           </div>
         </div>

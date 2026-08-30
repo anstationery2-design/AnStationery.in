@@ -97,18 +97,31 @@ export function Header() {
           </button>
           <Link
             href={user ? "/account" : "/login"}
-            className="hidden h-10 w-10 place-items-center overflow-hidden rounded-full hover:bg-cream sm:grid"
+            className="hidden items-center gap-2 rounded-full py-1 pl-1 pr-2 transition hover:bg-cream sm:flex"
             aria-label="Account"
           >
-            {user?.image ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={user.image}
-                alt={user.name}
-                className="h-full w-full rounded-full object-cover"
-              />
+            {user ? (
+              <>
+                <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-yellow font-display text-sm font-black text-ink">
+                  {user.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={user.image}
+                      alt={user.name}
+                      className="h-full w-full rounded-full object-cover"
+                    />
+                  ) : (
+                    user.name.trim().charAt(0).toUpperCase() || "U"
+                  )}
+                </span>
+                <span className="hidden max-w-[90px] truncate text-sm font-bold lg:block">
+                  {user.name.trim().split(" ")[0]}
+                </span>
+              </>
             ) : (
-              <User className="h-5 w-5" />
+              <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-line text-muted">
+                <User className="h-4 w-4" />
+              </span>
             )}
           </Link>
           <button

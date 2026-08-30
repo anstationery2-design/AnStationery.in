@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { supabase } from "@/lib/supabase";
 import { SITE } from "@/lib/constants";
+import { getUserSession } from "@/lib/auth";
 
 const LineSchema = z.object({
   slug: z.string().min(1),
@@ -22,6 +23,16 @@ const OrderSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  // Security: only signed-in users can place orders. Server-side check —
+  // cannot be bypassed by calling the API directly.
+  const session = await getUserSession();
+  if (!session) {
+    return NextResponse.json(
+      { error: "You must be signed in to place an order." },
+      { status: 401 },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
