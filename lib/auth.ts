@@ -150,9 +150,8 @@ export async function getAnySession(): Promise<SessionUser | null> {
 // GOOGLE OAuth helpers
 // =====================
 
-export function getGoogleOAuthUrl(state: string): string {
+export function getGoogleOAuthUrl(state: string, redirectUri: string): string {
   const clientId = process.env.GOOGLE_CLIENT_ID || "";
-  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/auth/google/callback`;
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -164,7 +163,10 @@ export function getGoogleOAuthUrl(state: string): string {
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
-export async function exchangeGoogleCode(code: string): Promise<{
+export async function exchangeGoogleCode(
+  code: string,
+  redirectUri: string,
+): Promise<{
   email: string;
   name: string;
   picture: string;
@@ -172,7 +174,6 @@ export async function exchangeGoogleCode(code: string): Promise<{
 } | null> {
   const clientId = process.env.GOOGLE_CLIENT_ID || "";
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET || "";
-  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/auth/google/callback`;
 
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",

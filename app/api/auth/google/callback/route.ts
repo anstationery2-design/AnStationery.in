@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     /* keep default */
   }
 
-  const user = await exchangeGoogleCode(code);
+  const user = await exchangeGoogleCode(code, `${new URL(request.url).origin}/api/auth/google/callback`);
   if (!user) {
     return NextResponse.redirect(new URL("/login?error=auth_failed", request.url));
   }
