@@ -86,9 +86,29 @@ export const ORDER_STATUSES = [
   "CONFIRMED",
   "PROCESSING",
   "SHIPPED",
+  "OUT_FOR_DELIVERY",
   "DELIVERED",
   "CANCELLED",
 ] as const;
+
+export const SHIPMENT_STATUSES = [
+  "PENDING",
+  "PACKED",
+  "SHIPPED",
+  "OUT_FOR_DELIVERY",
+  "DELIVERED",
+  "CANCELLED",
+] as const;
+
+// Maps a shipment status → the order status customers see.
+export const SHIPMENT_TO_ORDER_STATUS: Record<string, string> = {
+  PENDING: "CONFIRMED",
+  PACKED: "PROCESSING",
+  SHIPPED: "SHIPPED",
+  OUT_FOR_DELIVERY: "OUT_FOR_DELIVERY",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+};
 
 export const BADGES = [
   "NEW",
@@ -114,6 +134,26 @@ export const STATUS_COLORS: Record<string, string> = {
   CONFIRMED: "bg-yellow-soft text-ink",
   PROCESSING: "bg-pastel-peach text-ink",
   SHIPPED: "bg-pastel-mint text-ink",
+  OUT_FOR_DELIVERY: "bg-yellow text-ink",
   DELIVERED: "bg-badge-new/15 text-badge-new",
   CANCELLED: "bg-badge-sale/15 text-badge-sale",
 };
+
+export const SHIPMENT_STATUS_COLORS: Record<string, string> = {
+  PENDING: "bg-cream text-muted",
+  PACKED: "bg-pastel-peach text-ink",
+  SHIPPED: "bg-pastel-mint text-ink",
+  OUT_FOR_DELIVERY: "bg-yellow text-ink",
+  DELIVERED: "bg-badge-new/15 text-badge-new",
+  CANCELLED: "bg-badge-sale/15 text-badge-sale",
+};
+
+// Progress order used to draw the customer-facing tracking timeline.
+export const TRACK_STEPS = [
+  { key: "NEW", label: "Placed" },
+  { key: "CONFIRMED", label: "Confirmed" },
+  { key: "PROCESSING", label: "Processing" },
+  { key: "SHIPPED", label: "Shipped" },
+  { key: "OUT_FOR_DELIVERY", label: "Out for Delivery" },
+  { key: "DELIVERED", label: "Delivered" },
+] as const;

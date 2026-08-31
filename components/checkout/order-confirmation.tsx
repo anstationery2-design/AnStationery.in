@@ -27,6 +27,7 @@ const STEPS = [
   { key: "CONFIRMED", label: "Confirmed", icon: CheckCircle2 },
   { key: "PROCESSING", label: "Processing", icon: Package },
   { key: "SHIPPED", label: "Shipped", icon: Truck },
+  { key: "OUT_FOR_DELIVERY", label: "Out for Delivery", icon: Truck },
   { key: "DELIVERED", label: "Delivered", icon: Home },
 ];
 
@@ -65,7 +66,10 @@ export function OrderConfirmation() {
             <h2 className="mb-4 font-display text-lg font-black">Order Status</h2>
             <ol className="flex justify-between">
               {STEPS.map((step, i) => {
-                const active = i === 0;
+                const currentIdx = order.status
+                  ? STEPS.findIndex((s) => s.key === order.status)
+                  : 0;
+                const active = order.status === "CANCELLED" ? false : i <= currentIdx;
                 return (
                   <li key={step.key} className="flex flex-1 flex-col items-center gap-2 text-center">
                     <span

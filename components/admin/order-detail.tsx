@@ -3,9 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Truck } from "lucide-react";
+import { ArrowLeft, Download, Save, Truck } from "lucide-react";
 import { formatINR } from "@/lib/utils";
-import { ORDER_STATUSES, STATUS_COLORS } from "@/lib/constants";
+import {
+  ORDER_STATUSES,
+  STATUS_COLORS,
+  SHIPMENT_STATUSES,
+  SHIPMENT_STATUS_COLORS,
+} from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type OrderItem = {
@@ -53,8 +58,10 @@ export function OrderDetail({
     courierName: order.shipment?.courierName ?? "",
     trackingNumber: order.shipment?.trackingNumber ?? "",
     trackingUrl: order.shipment?.trackingUrl ?? "",
+    status: order.shipment?.status ?? "PENDING",
   });
   const [savingShip, setSavingShip] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [msg, setMsg] = useState("");
 
   const updateStatus = async () => {
@@ -75,15 +82,34 @@ export function OrderDetail({
     await fetch(`/api/admin/orders/${order.id}/shipment`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...ship,
-        status: ship.courierName && ship.trackingNumber ? "SHIPPED" : "PENDING",
-      }),
+      body: JSON.stringify(ship),
     });
     setSavingShip(false);
     setMsg("Shipping info saved");
     router.refresh();
     setTimeout(() => setMsg(""), 2000);
+  };
+
+  const downloadInvoice = async () => {
+    setDownloading(true);
+    try {
+      const res = await fetch(`/api/admin/orders/${order.id}/invoice`);
+      if (!res.ok) throw new Error("Failed to generate invoice");
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `invoice-${order.orderNumber}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch {
+      setMsg("Could not generate invoice");
+    } finally {
+      setDownloading(false);
+      setTimeout(() => setMsg(""), 2000);
+    }
   };
 
   return (
@@ -137,11 +163,33 @@ export function OrderDetail({
             <div className="mb-3 flex items-center gap-2">
               <Truck className="h-5 w-5 text-yellow-deep" />
               <h3 className="font-display font-black">Shipping & Tracking</h3>
+              {order.shipment?.status && (
+                <span
+                  className={cn(
+                    "ml-auto rounded-full px-2.5 py-1 text-xs font-bold",
+                    SHIPMENT_STATUS_COLORS[order.shipment.status],
+                  )}
+                >
+                  {order.shipment.status}
+                </span>
+              )}
             </div>
             <p className="mb-3 text-xs text-muted">
-              Enter courier details manually. Order auto-advances to SHIPPED when both are set.
+              Update the delivery stage. Customers see this status and tracking instantly.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
+              <label className="block">
+                <span className="mb-1 block text-sm font-semibold">Shipment Status</span>
+                <select
+                  value={ship.status}
+                  onChange={(e) => setShip({ ...ship, status: e.target.value })}
+                  className={inputCls}
+                >
+                  {SHIPMENT_STATUSES.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </label>
               <label className="block">
                 <span className="mb-1 block text-sm font-semibold">Courier Name</span>
                 <input
@@ -160,7 +208,7 @@ export function OrderDetail({
                   className={inputCls}
                 />
               </label>
-              <label className="block sm:col-span-2">
+              <label className="block">
                 <span className="mb-1 block text-sm font-semibold">Tracking URL (optional)</span>
                 <input
                   value={ship.trackingUrl}
@@ -170,13 +218,22 @@ export function OrderDetail({
                 />
               </label>
             </div>
-            <button
-              onClick={saveShipment}
-              disabled={savingShip}
-              className="mt-3 flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white hover:bg-yellow hover:text-ink disabled:opacity-60"
-            >
-              <Save className="h-4 w-4" /> Save Shipping
-            </button>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                onClick={saveShipment}
+                disabled={savingShip}
+                className="flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white hover:bg-yellow hover:text-ink disabled:opacity-60"
+              >
+                <Save className="h-4 w-4" /> Save Shipping
+              </button>
+              <button
+                onClick={downloadInvoice}
+                disabled={downloading}
+                className="flex items-center gap-2 rounded-full border-2 border-yellow px-5 py-2.5 text-sm font-bold text-ink hover:bg-yellow disabled:opacity-60"
+              >
+                <Download className="h-4 w-4" /> {downloading ? "Generating…" : "Download Invoice (PDF)"}
+              </button>
+            </div>
             {order.shipment?.trackingNumber && (
               <p className="mt-2 text-xs text-muted">
                 Current tracking: {order.shipment.trackingNumber} ({order.shipment.status})

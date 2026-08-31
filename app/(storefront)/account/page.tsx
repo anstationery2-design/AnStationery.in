@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import { getUserSession } from "@/lib/auth";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
-import { STATUS_COLORS } from "@/lib/constants";
+import { STATUS_COLORS, TRACK_STEPS } from "@/lib/constants";
 import { formatINR } from "@/lib/utils";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { DownloadInvoiceButton } from "@/components/account/download-invoice-button";
 import { SITE } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -53,6 +54,7 @@ type Order = {
 
 const PAYMENT_LABEL: Record<string, { label: string; className: string }> = {
   DELIVERED: { label: "Paid", className: "bg-badge-new/15 text-badge-new" },
+  OUT_FOR_DELIVERY: { label: "Paid", className: "bg-badge-new/15 text-badge-new" },
   SHIPPED: { label: "Paid", className: "bg-badge-new/15 text-badge-new" },
   CONFIRMED: { label: "Pending", className: "bg-yellow-soft text-ink" },
   PROCESSING: { label: "Pending", className: "bg-yellow-soft text-ink" },
@@ -319,6 +321,20 @@ export default async function AccountPage() {
                         : ""}
                     </div>
                   )}
+
+                  {/* Tracking timeline */}
+                  {order.status !== "CANCELLED" ? (
+                    <TrackingTimeline status={order.status} />
+                  ) : (
+                    <div className="mt-3 rounded-xl bg-badge-sale/15 px-4 py-2.5 text-sm font-semibold text-badge-sale">
+                      This order has been cancelled.
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <DownloadInvoiceButton orderNumber={order.order_number} />
+                  </div>
                 </div>
               ))}
             </div>
@@ -326,5 +342,35 @@ export default async function AccountPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+function TrackingTimeline({ status }: { status: string }) {
+  const currentIdx = TRACK_STEPS.findIndex((s) => s.key === status);
+  return (
+    <ol className="mt-4 flex items-center gap-1">
+      {TRACK_STEPS.map((step, i) => {
+        const done = i <= currentIdx;
+        const isCurrent = i === currentIdx;
+        return (
+          <li key={step.key} className="flex flex-1 flex-col items-center text-center">
+            <span
+              className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-black ${
+                done ? "bg-yellow text-ink" : "bg-cream text-muted"
+              }`}
+            >
+              {done ? "✓" : i + 1}
+            </span>
+            <span
+              className={`mt-1 text-[10px] font-semibold leading-tight ${
+                isCurrent ? "text-ink" : done ? "text-ink/70" : "text-muted"
+              }`}
+            >
+              {step.label}
+            </span>
+          </li>
+        );
+      })}
+    </ol>
   );
 }

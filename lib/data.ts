@@ -617,6 +617,16 @@ export async function adminGetOrderByNumber(orderNumber: string) {
   return data;
 }
 
+export async function getUserOrderByNumber(orderNumber: string, email: string) {
+  const { data } = await supabase
+    .from("orders")
+    .select("*, items:order_items(*), shipment:shipments(*)")
+    .eq("order_number", orderNumber)
+    .eq("customer_email", email)
+    .maybeSingle();
+  return data;
+}
+
 export async function adminUpdateOrderStatus(id: string, status: string) {
   await supabase.from("orders").update({ status }).eq("id", id);
 }

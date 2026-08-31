@@ -42,7 +42,7 @@ export function Header() {
         scrolled ? "shadow-sm" : "shadow-none",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8">
         {/* Mobile menu button */}
         <button
           className="grid h-10 w-10 place-items-center rounded-full hover:bg-cream lg:hidden"
@@ -97,7 +97,7 @@ export function Header() {
           </button>
           <Link
             href={user ? "/account" : "/login"}
-            className="hidden items-center gap-2 rounded-full py-1 pl-1 pr-2 transition hover:bg-cream sm:flex"
+            className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 transition hover:bg-cream"
             aria-label="Account"
           >
             {user ? (
@@ -215,8 +215,27 @@ export function Header() {
                   onClick={() => setMobileOpen(false)}
                   className="mt-2 flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-sm"
                 >
-                  <User className="h-4 w-4 text-yellow-deep" />{" "}
-                  {user ? "My Account" : "Sign in / Account"}
+                  {user ? (
+                    <>
+                      <span className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full bg-yellow text-xs font-black text-ink">
+                        {user.image ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={user.image}
+                            alt={user.name}
+                            className="h-full w-full rounded-full object-cover"
+                          />
+                        ) : (
+                          user.name.trim().charAt(0).toUpperCase() || "U"
+                        )}
+                      </span>
+                      My Account
+                    </>
+                  ) : (
+                    <>
+                      <User className="h-4 w-4 text-yellow-deep" /> Sign in / Account
+                    </>
+                  )}
                 </Link>
               </div>
             </div>
