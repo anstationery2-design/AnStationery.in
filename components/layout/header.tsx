@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { useCart } from "@/components/cart/cart-context";
+import { NotificationBell } from "@/components/layout/notification-bell";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -88,6 +89,7 @@ export function Header() {
 
         {/* Right actions */}
         <div className="flex items-center gap-1">
+          <NotificationBell email={user?.email ?? ""} />
           <button
             className="grid h-10 w-10 place-items-center rounded-full hover:bg-cream"
             onClick={() => setSearchOpen((v) => !v)}

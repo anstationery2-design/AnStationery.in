@@ -9,6 +9,7 @@
 -- ============================================================
 
 -- 0. CLEANUP (idempotent — safe to re-run)
+DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS site_config CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
 DROP TABLE IF EXISTS banners CASCADE;
@@ -174,6 +175,23 @@ CREATE TABLE site_config (
   value TEXT NOT NULL
 );
 
+-- NOTIFICATIONS (in-app notifications pushed to top-nav bell)
+-- One row per event: order placed, status changed (shipped, out for
+-- delivery, delivered, cancelled), etc. Keyed to the recipient email
+-- so both customers and the admin can read their own latest updates.
+CREATE TABLE notifications (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_email   TEXT NOT NULL,
+  order_id     UUID REFERENCES orders(id) ON DELETE CASCADE,
+  order_number TEXT,
+  type         TEXT DEFAULT 'ORDER_STATUS',
+  title        TEXT NOT NULL,
+  message      TEXT NOT NULL,
+  status       TEXT,
+  is_read      BOOLEAN DEFAULT FALSE,
+  created_at   TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- ============================================================
 -- 4. INDEXES
 -- ============================================================
@@ -186,6 +204,8 @@ CREATE INDEX idx_product_images_pid   ON product_images(product_id);
 CREATE INDEX idx_orders_status        ON orders(status);
 CREATE INDEX idx_orders_created       ON orders(created_at);
 CREATE INDEX idx_order_items_order    ON order_items(order_id);
+CREATE INDEX idx_notifications_user   ON notifications(user_email, created_at DESC);
+CREATE INDEX idx_notifications_unread ON notifications(user_email) WHERE is_read = FALSE;
 
 -- ============================================================
 -- 5. TRIGGERS for updated_at
@@ -214,6 +234,7 @@ ALTER TABLE shipments      ENABLE ROW LEVEL SECURITY;
 ALTER TABLE banners        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reviews        ENABLE ROW LEVEL SECURITY;
 ALTER TABLE site_config    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users          ENABLE ROW LEVEL SECURITY;
 
 -- Allow all operations for the anon role (demo)
@@ -226,6 +247,7 @@ CREATE POLICY "anon_all_shipments"    ON shipments     FOR ALL USING (TRUE) WITH
 CREATE POLICY "anon_all_banners"      ON banners       FOR ALL USING (TRUE) WITH CHECK (TRUE);
 CREATE POLICY "anon_all_reviews"      ON reviews       FOR ALL USING (TRUE) WITH CHECK (TRUE);
 CREATE POLICY "anon_all_site_config"  ON site_config   FOR ALL USING (TRUE) WITH CHECK (TRUE);
+CREATE POLICY "anon_all_notifications" ON notifications FOR ALL USING (TRUE) WITH CHECK (TRUE);
 CREATE POLICY "anon_no_users"         ON users         FOR ALL USING (FALSE) WITH CHECK (FALSE);
 
 -- ============================================================
@@ -537,7 +559,8 @@ INSERT INTO site_config (key, value) VALUES
 -- ============================================================
 -- DONE! Your database is ready.
 -- Tables: users, categories, products, product_images, orders,
---         order_items, shipments, banners, reviews, site_config
+--         order_items, shipments, banners, reviews, site_config,
+--         notifications
 -- RPC:    create_order() for atomic checkout (SECURITY DEFINER,
 --         pinned search_path, grants applied for anon calls)
 -- RLS:    Permissive anon policies + explicit grants so the app's
@@ -574,18 +597,61 @@ SET public = true,
 
 -- Allow the app's publishable (anon) key to upload, read and manage
 -- objects inside the product-images bucket.
-CREATE POLICY "product_images_insert" ON storage.objects
-  FOR INSERT TO anon, authenticated
-  WITH CHECK (bucket_id = 'product-images');
+--   NOTE: storage.objects is NOT dropped by the cleanup above, so these
+--   policies must be created idempotently — each one is guarded so a
+--   re-run skips it instead of failing with "policy already exists".
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'storage' AND tablename = 'objects'
+      AND policyname = 'product_images_insert'
+  ) THEN
+    CREATE POLICY "product_images_insert" ON storage.objects
+      FOR INSERT TO anon, authenticated
+      WITH CHECK (bucket_id = 'product-images');
+  END IF;
+END;
+$$;
 
-CREATE POLICY "product_images_select" ON storage.objects
-  FOR SELECT TO anon, authenticated
-  USING (bucket_id = 'product-images');
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'storage' AND tablename = 'objects'
+      AND policyname = 'product_images_select'
+  ) THEN
+    CREATE POLICY "product_images_select" ON storage.objects
+      FOR SELECT TO anon, authenticated
+      USING (bucket_id = 'product-images');
+  END IF;
+END;
+$$;
 
-CREATE POLICY "product_images_update" ON storage.objects
-  FOR UPDATE TO anon, authenticated
-  USING (bucket_id = 'product-images');
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'storage' AND tablename = 'objects'
+      AND policyname = 'product_images_update'
+  ) THEN
+    CREATE POLICY "product_images_update" ON storage.objects
+      FOR UPDATE TO anon, authenticated
+      USING (bucket_id = 'product-images');
+  END IF;
+END;
+$$;
 
-CREATE POLICY "product_images_delete" ON storage.objects
-  FOR DELETE TO anon, authenticated
-  USING (bucket_id = 'product-images');
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies
+    WHERE schemaname = 'storage' AND tablename = 'objects'
+      AND policyname = 'product_images_delete'
+  ) THEN
+    CREATE POLICY "product_images_delete" ON storage.objects
+      FOR DELETE TO anon, authenticated
+      USING (bucket_id = 'product-images');
+  END IF;
+END;
+$$;

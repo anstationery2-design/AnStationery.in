@@ -78,5 +78,28 @@ export async function POST(request: Request) {
     );
   }
 
+  // Notify the customer (order placed) + the admin (new order) so the top-nav
+  // bell shows the update on time.
+  if (data.customerEmail) {
+    await supabase.from("notifications").insert({
+      user_email: data.customerEmail,
+      order_number: order?.orderNumber ?? null,
+      type: "ORDER_STATUS",
+      title: "Order Placed",
+      message: `Thanks ${data.customerName}! Your order #${order?.orderNumber ?? ""} was placed successfully.`,
+      status: "NEW",
+      is_read: false,
+    });
+  }
+  await supabase.from("notifications").insert({
+    user_email: process.env.ADMIN_EMAIL || "Anstationery2@gmail.com",
+    order_number: order?.orderNumber ?? null,
+    type: "ADMIN",
+    title: "New Order Received",
+    message: `New order #${order?.orderNumber ?? ""} for Rs. ${order?.totalAmount ?? 0} from ${data.customerName}.`,
+    status: "NEW",
+    is_read: false,
+  });
+
   return NextResponse.json({ order }, { status: 201 });
 }

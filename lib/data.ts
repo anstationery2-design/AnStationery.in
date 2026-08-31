@@ -628,7 +628,103 @@ export async function getUserOrderByNumber(orderNumber: string, email: string) {
 }
 
 export async function adminUpdateOrderStatus(id: string, status: string) {
+  const { data: order } = await supabase
+    .from("orders")
+    .select("id, order_number, customer_email, status")
+    .eq("id", id)
+    .maybeSingle();
+  if (!order) return;
+  if (order.status === status) return;
   await supabase.from("orders").update({ status }).eq("id", id);
+
+  // Push an in-app notification so customers see the change on time.
+  if (order.customer_email) {
+    const msg = orderStatusNotification(status);
+    await supabase.from("notifications").insert({
+      user_email: order.customer_email,
+      order_id: order.id,
+      order_number: order.order_number,
+      type: "ORDER_STATUS",
+      title: msg.title,
+      message: msg.message,
+      status,
+      is_read: false,
+    });
+  }
+}
+
+export function orderStatusNotification(status: string): { title: string; message: string } {
+  switch (status) {
+    case "CONFIRMED":
+      return { title: "Order Confirmed", message: "Good news! Your order has been confirmed and is being prepared." };
+    case "PROCESSING":
+      return { title: "Order Processing", message: "Your order is now being processed for dispatch." };
+    case "SHIPPED":
+      return { title: "Order Shipped", message: "Your order has been shipped and is on its way to you!" };
+    case "OUT_FOR_DELIVERY":
+      return { title: "Out for Delivery", message: "Great news! Your order is out for delivery today." };
+    case "DELIVERED":
+      return { title: "Delivered", message: "Your order has been delivered. Enjoy your new goodies!" };
+    case "CANCELLED":
+      return { title: "Order Cancelled", message: "Your order has been cancelled. We're sorry about that." };
+    default:
+      return { title: "Order Update", message: `Your order status is now ${status}.` };
+  }
+}
+
+export async function createNotification(input: {
+  email: string;
+  orderId?: string | null;
+  orderNumber?: string | null;
+  type?: string;
+  title: string;
+  message: string;
+  status?: string | null;
+}) {
+  if (!input.email) return;
+  await supabase.from("notifications").insert({
+    user_email: input.email,
+    order_id: input.orderId ?? null,
+    order_number: input.orderNumber ?? null,
+    type: input.type ?? "ORDER_STATUS",
+    title: input.title,
+    message: input.message,
+    status: input.status ?? null,
+    is_read: false,
+  });
+}
+
+export async function getUserNotifications(email: string) {
+  if (!email) return { notifications: [], unread: 0 };
+  const { data, error } = await supabase
+    .from("notifications")
+    .select("*")
+    .eq("user_email", email)
+    .order("created_at", { ascending: false })
+    .limit(30);
+  if (error || !data) return { notifications: [], unread: 0 };
+  const notifications = data as {
+    id: string;
+    user_email: string;
+    order_id: string | null;
+    order_number: string | null;
+    type: string;
+    title: string;
+    message: string;
+    status: string | null;
+    is_read: boolean;
+    created_at: string;
+  }[];
+  return { notifications, unread: notifications.filter((n) => !n.is_read).length };
+}
+
+export async function markNotificationsRead(email: string) {
+  if (!email) return;
+  await supabase
+    .from("notifications")
+    .update({ is_read: true })
+    .eq("user_email", email)
+    .eq("is_read", false);
 }
 
 export async function adminUpdateShipment(
