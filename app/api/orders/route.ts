@@ -4,8 +4,6 @@ import { SITE } from "@/lib/constants";
 import { getUserSession } from "@/lib/auth";
 
 export async function POST(request: Request) {
-  // Security: only signed-in users can place orders. Server-side check —
-  // cannot be bypassed by calling the API directly.
   const session = await getUserSession();
   if (!session) {
     return NextResponse.json(
@@ -21,8 +19,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  // --- Manual validation (avoids Zod v4 compatibility issues) ---
-
+  // --- Manual validation ---
   const customerName = String(body.customerName || "");
   if (customerName.length < 2) {
     return NextResponse.json({ error: "Please enter your full name" }, { status: 400 });
@@ -59,8 +56,6 @@ export async function POST(request: Request) {
   if (!Array.isArray(lines) || lines.length === 0) {
     return NextResponse.json({ error: "Your cart is empty" }, { status: 400 });
   }
-
-  // Validate each line
   for (const line of lines) {
     if (typeof line !== "object" || !line) {
       return NextResponse.json({ error: "Invalid cart item" }, { status: 400 });
@@ -75,15 +70,13 @@ export async function POST(request: Request) {
     }
   }
 
-  // Payment fields
+  // --- Try new RPC (with payment params) first, fall back to old RPC if DB not updated ---
   const paymentMethod = String(body.paymentMethod || "COD");
   const razorpayOrderId = String(body.razorpayOrderId || "");
   const razorpayPaymentId = String(body.razorpayPaymentId || "");
   const razorpaySignature = String(body.razorpaySignature || "");
 
-  // Call the create_order RPC (atomic: validates stock, creates order,
-  // creates items with snapshots, decrements stock — all in one transaction)
-  const { data: order, error } = await supabase.rpc("create_order", {
+  const baseParams = {
     p_customer_name: customerName,
     p_customer_phone: customerPhone,
     p_customer_email: customerEmail || "",
@@ -91,20 +84,28 @@ export async function POST(request: Request) {
     p_city: city,
     p_state: state,
     p_pincode: pincode,
-    p_lines: lines.map((l: Record<string, unknown>) => ({
-      slug: l.slug,
-      quantity: Number(l.quantity),
-    })),
+    p_lines: lines.map((l: Record<string, unknown>) => ({ slug: l.slug, quantity: Number(l.quantity) })),
     p_shipping_threshold: SITE.freeShippingThreshold,
     p_shipping_fee: SITE.shippingFee,
+  };
+
+  // Try with payment params
+  let result = await supabase.rpc("create_order", {
+    ...baseParams,
     p_payment_method: paymentMethod,
     p_razorpay_order_id: razorpayOrderId || null,
     p_razorpay_payment_id: razorpayPaymentId || null,
     p_razorpay_signature: razorpaySignature || null,
   });
 
-  if (error) {
-    const msg = error.message ?? "Order could not be placed.";
+  // If the RPC failed because the DB function doesn't have payment params yet,
+  // fall back to the original 9-parameter version
+  if (result.error && result.error.message?.includes("p_payment_method")) {
+    result = await supabase.rpc("create_order", baseParams);
+  }
+
+  if (result.error) {
+    const msg = result.error.message ?? "Order could not be placed.";
     const isStockError = msg.includes("available") || msg.includes("not available");
     return NextResponse.json(
       { error: msg },
@@ -112,7 +113,9 @@ export async function POST(request: Request) {
     );
   }
 
-  // Notify the customer + the admin
+  const order = result.data;
+
+  // Notify
   if (customerEmail) {
     await supabase.from("notifications").insert({
       user_email: customerEmail,
