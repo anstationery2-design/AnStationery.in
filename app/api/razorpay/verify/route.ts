@@ -1,11 +1,4 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
-const VerifySchema = z.object({
-  razorpay_order_id: z.string().min(1),
-  razorpay_payment_id: z.string().min(1),
-  razorpay_signature: z.string().min(1),
-});
 
 export async function POST(request: Request) {
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -17,26 +10,23 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: unknown;
+  let body: Record<string, unknown>;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  const parsed = VerifySchema.safeParse(body);
-  if (!parsed.success) {
+  const razorpay_order_id = String(body.razorpay_order_id || "");
+  const razorpay_payment_id = String(body.razorpay_payment_id || "");
+  const razorpay_signature = String(body.razorpay_signature || "");
+
+  if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return NextResponse.json(
-      {
-        error: "Missing payment verification details",
-        issues: parsed.error.flatten().fieldErrors,
-      },
+      { error: "Missing payment verification details" },
       { status: 400 },
     );
   }
-
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    parsed.data;
 
   try {
     // Razorpay signature verification (standard HMAC SHA256)
