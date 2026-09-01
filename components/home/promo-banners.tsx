@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const VARIANT_BG: Record<string, string> = {
-  yellow: "bg-yellow text-ink",
+  green: "bg-primary text-white",
   cream: "bg-cream-deep text-ink",
   photo: "bg-ink text-white",
   pastel: "bg-pastel-lilac text-ink",
@@ -32,7 +32,7 @@ export function PromoBanners({ banners }: { banners: BannerItem[] }) {
             href={b.buttonUrl ?? "/shop"}
             className={cn(
               "tape group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 shadow-sm transition hover:shadow-lg min-h-[180px]",
-              VARIANT_BG[b.variant] ?? VARIANT_BG.yellow,
+              VARIANT_BG[b.variant] ?? VARIANT_BG.green,
             )}
           >
             <span className="pointer-events-none absolute -right-4 -top-4 text-7xl opacity-20 transition group-hover:scale-110">

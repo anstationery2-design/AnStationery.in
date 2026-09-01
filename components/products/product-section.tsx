@@ -9,7 +9,7 @@ export function ProductSection({
   subtitle,
   products,
   viewAllHref,
-  accent = "text-yellow-deep",
+  accent = "text-primary-hover",
 }: {
   eyebrow?: string;
   title: string;

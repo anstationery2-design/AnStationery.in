@@ -263,7 +263,7 @@ export function ProductForm({
         <button
           type="submit"
           disabled={saving}
-          className="flex items-center gap-2 rounded-full bg-ink px-6 py-3 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink disabled:opacity-60"
+          className="flex items-center gap-2 rounded-full bg-ink px-6 py-3 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white disabled:opacity-60"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           {mode === "create" ? "Publish Product" : "Save Changes"}
@@ -280,7 +280,7 @@ export function ProductForm({
 }
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-yellow-deep";
+  "w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-primary";
 
 function Section({
   title,
@@ -335,14 +335,14 @@ function Toggle({
       onClick={() => onChange(!checked)}
       className={cn(
         "flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold transition",
-        checked ? "border-yellow-deep bg-yellow-soft" : "border-line bg-cream",
+        checked ? "border-primary bg-primary-soft" : "border-line bg-cream",
       )}
     >
       {label}
       <span
         className={cn(
           "relative h-5 w-9 rounded-full transition",
-          checked ? "bg-yellow-deep" : "bg-line",
+          checked ? "bg-primary-hover" : "bg-line",
         )}
       >
         <span

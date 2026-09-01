@@ -56,9 +56,9 @@ const PAYMENT_LABEL: Record<string, { label: string; className: string }> = {
   DELIVERED: { label: "Paid", className: "bg-badge-new/15 text-badge-new" },
   OUT_FOR_DELIVERY: { label: "Paid", className: "bg-badge-new/15 text-badge-new" },
   SHIPPED: { label: "Paid", className: "bg-badge-new/15 text-badge-new" },
-  CONFIRMED: { label: "Pending", className: "bg-yellow-soft text-ink" },
-  PROCESSING: { label: "Pending", className: "bg-yellow-soft text-ink" },
-  NEW: { label: "Pending", className: "bg-yellow-soft text-ink" },
+  CONFIRMED: { label: "Pending", className: "bg-primary-soft text-ink" },
+  PROCESSING: { label: "Pending", className: "bg-primary-soft text-ink" },
+  NEW: { label: "Pending", className: "bg-primary-soft text-ink" },
   CANCELLED: { label: "Refunded / N/A", className: "bg-badge-sale/15 text-badge-sale" },
 };
 
@@ -94,7 +94,7 @@ export default async function AccountPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
-      <p className="font-accent text-2xl font-bold text-yellow-deep">
+      <p className="font-accent text-2xl font-bold text-primary-hover">
         your account
       </p>
       <h1 className="mt-1 font-display text-4xl font-black tracking-tight sm:text-5xl">
@@ -112,10 +112,10 @@ export default async function AccountPage() {
                 <img
                   src={session.image}
                   alt={session.name}
-                  className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-yellow"
+                  className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-primary"
                 />
               ) : (
-                <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-yellow font-display text-xl font-black text-ink">
+                <span className="grid h-16 w-16 shrink-0 place-items-center rounded-full bg-primary font-display text-xl font-black text-white">
                   {initials}
                 </span>
               )}
@@ -127,7 +127,7 @@ export default async function AccountPage() {
 
             <dl className="mt-6 space-y-3 text-sm">
               <div className="flex items-center gap-3 rounded-xl bg-cream px-4 py-3">
-                <User className="h-5 w-5 shrink-0 text-yellow-deep" />
+                <User className="h-5 w-5 shrink-0 text-primary-hover" />
                 <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-wide text-muted">
                     Email
@@ -136,7 +136,7 @@ export default async function AccountPage() {
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-xl bg-cream px-4 py-3">
-                <CreditCard className="h-5 w-5 shrink-0 text-yellow-deep" />
+                <CreditCard className="h-5 w-5 shrink-0 text-primary-hover" />
                 <div className="min-w-0">
                   <p className="text-xs font-semibold uppercase tracking-wide text-muted">
                     Account ID
@@ -146,12 +146,12 @@ export default async function AccountPage() {
               </div>
             </dl>
 
-            <div className="mt-6 flex items-center justify-center gap-4 rounded-xl bg-yellow-soft px-4 py-3 text-center">
+            <div className="mt-6 flex items-center justify-center gap-4 rounded-xl bg-primary-soft px-4 py-3 text-center">
               <div>
                 <p className="font-display text-2xl font-black">{orders.length}</p>
                 <p className="text-xs font-semibold text-muted">Orders</p>
               </div>
-              <div className="h-8 w-px bg-yellow-deep/30" />
+              <div className="h-8 w-px bg-primary-hover/30" />
               <div>
                 <p className="font-display text-2xl font-black">{totalItems}</p>
                 <p className="text-xs font-semibold text-muted">Items</p>
@@ -163,7 +163,7 @@ export default async function AccountPage() {
           <section className="rounded-3xl border border-line bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <h2 className="flex items-center gap-2 font-display text-lg font-black">
-                <MapPin className="h-5 w-5 text-yellow-deep" /> Delivery Address
+                <MapPin className="h-5 w-5 text-primary-hover" /> Delivery Address
               </h2>
             </div>
             {latestAddress ? (
@@ -176,7 +176,7 @@ export default async function AccountPage() {
                   {latestAddress.pincode}
                 </p>
                 <p className="mt-2 flex items-center gap-1.5 text-sm font-semibold">
-                  <Phone className="h-4 w-4 text-yellow-deep" />{" "}
+                  <Phone className="h-4 w-4 text-primary-hover" />{" "}
                   {latestAddress.customer_phone}
                 </p>
               </address>
@@ -187,7 +187,7 @@ export default async function AccountPage() {
             )}
             <Link
               href="/shop"
-              className="mt-5 flex items-center justify-center gap-2 rounded-full bg-ink py-3 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+              className="mt-5 flex items-center justify-center gap-2 rounded-full bg-ink py-3 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
             >
               <ShoppingBag className="h-4 w-4" /> Start Shopping
             </Link>
@@ -210,7 +210,7 @@ export default async function AccountPage() {
         {/* ===== Orders ===== */}
         <section className="rounded-3xl border border-line bg-white p-6 shadow-sm">
           <h2 className="flex items-center gap-2 font-display text-lg font-black">
-            <Package className="h-5 w-5 text-yellow-deep" /> Your Orders
+            <Package className="h-5 w-5 text-primary-hover" /> Your Orders
           </h2>
 
           {orders.length === 0 ? (
@@ -222,7 +222,7 @@ export default async function AccountPage() {
               </p>
               <Link
                 href="/shop"
-                className="mt-2 inline-flex items-center gap-2 rounded-full bg-yellow px-6 py-3 font-display text-sm font-bold text-ink transition hover:bg-yellow-deep"
+                className="mt-2 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-display text-sm font-bold text-white transition hover:bg-primary-hover"
               >
                 Shop now <ArrowRight className="h-4 w-4" />
               </Link>
@@ -274,7 +274,7 @@ export default async function AccountPage() {
                         className="flex items-center justify-between gap-3 py-2 text-sm"
                       >
                         <div className="flex items-center gap-2">
-                          <Wallet className="h-4 w-4 shrink-0 text-yellow-deep" />
+                          <Wallet className="h-4 w-4 shrink-0 text-primary-hover" />
                           <span className="line-clamp-1 font-semibold">
                             {item.product_name_snapshot}
                           </span>
@@ -356,7 +356,7 @@ function TrackingTimeline({ status }: { status: string }) {
           <li key={step.key} className="flex flex-1 flex-col items-center text-center">
             <span
               className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-black ${
-                done ? "bg-yellow text-ink" : "bg-cream text-muted"
+                done ? "bg-primary text-white" : "bg-cream text-muted"
               }`}
             >
               {done ? "✓" : i + 1}

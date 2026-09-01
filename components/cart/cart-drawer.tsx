@@ -48,9 +48,9 @@ export function CartDrawer() {
       >
         <div className="flex items-center justify-between border-b border-line px-5 py-4">
           <div className="flex items-center gap-2 font-display text-lg font-bold">
-            <ShoppingBag className="h-5 w-5 text-yellow-deep" />
+            <ShoppingBag className="h-5 w-5 text-primary-hover" />
             Your Cart
-            <span className="rounded-full bg-yellow px-2 text-xs font-bold text-ink">
+            <span className="rounded-full bg-primary px-2 text-xs font-bold text-white">
               {count}
             </span>
           </div>
@@ -81,7 +81,7 @@ export function CartDrawer() {
         ) : (
           <>
             {freeLeft > 0 ? (
-              <div className="bg-yellow-soft px-5 py-3 text-center text-xs font-semibold text-ink-soft">
+              <div className="bg-primary-soft px-5 py-3 text-center text-xs font-semibold text-ink-soft">
                 Add {formatINR(freeLeft)} more for FREE shipping {"\ud83d\ude9a"}
               </div>
             ) : (
@@ -172,7 +172,7 @@ export function CartDrawer() {
               <Link
                 href="/checkout"
                 onClick={() => setOpen(false)}
-                className="mt-2 block rounded-full bg-yellow py-3 text-center font-display text-sm font-bold text-ink transition hover:bg-yellow-deep"
+                className="mt-2 block rounded-full bg-primary py-3 text-center font-display text-sm font-bold text-white transition hover:bg-primary-hover"
               >
                 Proceed to Checkout {"\u2192"}
               </Link>

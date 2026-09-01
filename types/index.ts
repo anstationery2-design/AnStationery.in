@@ -46,7 +46,7 @@ export type Banner = {
   imageUrl?: string;
   buttonText: string;
   buttonUrl: string;
-  variant: "yellow" | "cream" | "photo" | "pastel";
+  variant: "green" | "cream" | "photo" | "pastel";
   accent: string;
   isActive: boolean;
   sortOrder: number;

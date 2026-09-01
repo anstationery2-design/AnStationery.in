@@ -288,7 +288,7 @@ export async function getActiveBanners() {
     subtitle: b.subtitle ?? "",
     buttonText: b.button_text ?? "",
     buttonUrl: b.button_url ?? "/shop",
-    variant: b.variant as "yellow" | "cream" | "photo" | "pastel",
+    variant: b.variant as "green" | "cream" | "photo" | "pastel",
   }));
 }
 
@@ -787,7 +787,7 @@ export async function adminCreateBanner(input: {
       image_url: input.imageUrl ?? null,
       button_text: input.buttonText ?? null,
       button_url: input.buttonUrl ?? null,
-      variant: input.variant ?? "yellow",
+      variant: input.variant ?? "green",
       is_active: input.isActive,
       sort_order: input.sortOrder,
     })
@@ -818,7 +818,7 @@ export async function adminUpdateBanner(
       image_url: input.imageUrl ?? null,
       button_text: input.buttonText ?? null,
       button_url: input.buttonUrl ?? null,
-      variant: input.variant ?? "yellow",
+      variant: input.variant ?? "green",
       is_active: input.isActive,
       sort_order: input.sortOrder,
     })

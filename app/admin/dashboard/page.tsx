@@ -20,7 +20,7 @@ export default async function DashboardPage() {
 
   const cards = [
     { label: "Total Orders", value: stats.totalOrders, icon: ShoppingBag, tint: "bg-pastel-sky" },
-    { label: "New Orders", value: stats.newOrders, icon: TrendingUp, tint: "bg-yellow" },
+    { label: "New Orders", value: stats.newOrders, icon: TrendingUp, tint: "bg-primary" },
     { label: "Total Products", value: stats.totalProducts, icon: Package, tint: "bg-pastel-mint" },
     { label: "Total Sales", value: formatINR(stats.totalSales), icon: IndianRupee, tint: "bg-pastel-lilac" },
   ];
@@ -117,7 +117,7 @@ export default async function DashboardPage() {
             <h3 className="font-display font-black">Out of Stock ({stats.outOfStock})</h3>
             <Link
               href="/admin/products"
-              className="ml-auto flex items-center gap-1 text-xs font-semibold text-yellow-deep hover:underline"
+              className="ml-auto flex items-center gap-1 text-xs font-semibold text-primary-hover hover:underline"
             >
               Manage <ArrowRight className="h-3 w-3" />
             </Link>
@@ -129,7 +129,7 @@ export default async function DashboardPage() {
           ) : (
             <p className="text-sm text-muted">
               {stats.outOfStock} product(s) need restocking.{" "}
-              <Link href="/admin/products" className="font-semibold text-yellow-deep hover:underline">
+              <Link href="/admin/products" className="font-semibold text-primary-hover hover:underline">
                 Update stock {"\u2192"}
               </Link>
             </p>
@@ -143,7 +143,7 @@ export default async function DashboardPage() {
           <h3 className="font-display font-black">Recent Orders</h3>
           <Link
             href="/admin/orders"
-            className="flex items-center gap-1 text-xs font-semibold text-yellow-deep hover:underline"
+            className="flex items-center gap-1 text-xs font-semibold text-primary-hover hover:underline"
           >
             View all <ArrowRight className="h-3 w-3" />
           </Link>

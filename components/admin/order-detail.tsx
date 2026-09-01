@@ -46,6 +46,10 @@ export function OrderDetail({
     shippingAmount: number;
     totalAmount: number;
     status: string;
+    paymentMethod?: string | null;
+    paymentStatus?: string | null;
+    razorpayOrderId?: string | null;
+    razorpayPaymentId?: string | null;
     createdAt: string;
     items: OrderItem[];
     shipment: Shipment;
@@ -155,13 +159,23 @@ export function OrderDetail({
                 <span>Total</span>
                 <span>{formatINR(order.totalAmount)}</span>
               </div>
+              {order.paymentMethod && (
+                <div className="flex justify-between border-t border-line pt-2 text-sm">
+                  <span className="text-muted">Payment</span>
+                  <span className="font-semibold">
+                    {order.paymentMethod === "RAZORPAY"
+                      ? "Paid Online (" + (order.paymentStatus ?? "PAID") + ")"
+                      : "Cash on Delivery"}
+                  </span>
+                </div>
+              )}
             </dl>
           </div>
 
           {/* Manual shipping */}
           <div className="rounded-2xl border border-line bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
-              <Truck className="h-5 w-5 text-yellow-deep" />
+              <Truck className="h-5 w-5 text-primary-hover" />
               <h3 className="font-display font-black">Shipping & Tracking</h3>
               {order.shipment?.status && (
                 <span
@@ -222,14 +236,14 @@ export function OrderDetail({
               <button
                 onClick={saveShipment}
                 disabled={savingShip}
-                className="flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white hover:bg-yellow hover:text-ink disabled:opacity-60"
+                className="flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-hover hover:text-white disabled:opacity-60"
               >
                 <Save className="h-4 w-4" /> Save Shipping
               </button>
               <button
                 onClick={downloadInvoice}
                 disabled={downloading}
-                className="flex items-center gap-2 rounded-full border-2 border-yellow px-5 py-2.5 text-sm font-bold text-ink hover:bg-yellow disabled:opacity-60"
+                className="flex items-center gap-2 rounded-full border-2 border-primary px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-hover disabled:opacity-60"
               >
                 <Download className="h-4 w-4" /> {downloading ? "Generating…" : "Download Invoice (PDF)"}
               </button>
@@ -274,7 +288,7 @@ export function OrderDetail({
             <button
               onClick={updateStatus}
               disabled={savingStatus || status === order.status}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-yellow py-2.5 text-sm font-bold text-ink hover:bg-yellow-deep disabled:opacity-50"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-primary py-2.5 text-sm font-bold text-white hover:bg-primary-hover disabled:opacity-50"
             >
               <Save className="h-4 w-4" /> Update Status
             </button>
@@ -295,4 +309,4 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-yellow-deep";
+  "w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-primary";

@@ -21,11 +21,11 @@ export function Categories({ cards }: { cards: CategoryCard[] }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
-        <p className="font-accent text-2xl font-bold text-yellow-deep">
+        <p className="font-accent text-2xl font-bold text-primary-hover">
           find your vibe
         </p>
         <h2 className="mt-1 font-display text-3xl font-black tracking-tight sm:text-4xl">
-          Shop by <span className="text-yellow-deep">Category</span>
+          Shop by <span className="text-primary-hover">Category</span>
         </h2>
         <p className="mt-2 text-sm text-muted">
           Curated collections for every mood & moment

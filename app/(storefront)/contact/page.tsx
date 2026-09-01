@@ -28,7 +28,7 @@ const FAQS = [
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-      <p className="font-accent text-2xl font-bold text-yellow-deep">
+      <p className="font-accent text-2xl font-bold text-primary-hover">
         we&rsquo;re here to help
       </p>
       <h1 className="mt-1 font-display text-4xl font-black tracking-tight sm:text-5xl">
@@ -51,20 +51,20 @@ export default function ContactPage() {
         <form className="mt-4 grid gap-4 sm:grid-cols-2">
           <input
             placeholder="Your name"
-            className="rounded-xl border border-line bg-cream px-4 py-3 text-sm outline-none focus:border-yellow-deep"
+            className="rounded-xl border border-line bg-cream px-4 py-3 text-sm outline-none focus:border-primary"
           />
           <input
             placeholder="Email or phone"
-            className="rounded-xl border border-line bg-cream px-4 py-3 text-sm outline-none focus:border-yellow-deep"
+            className="rounded-xl border border-line bg-cream px-4 py-3 text-sm outline-none focus:border-primary"
           />
           <textarea
             placeholder="How can we help?"
             rows={4}
-            className="sm:col-span-2 rounded-xl border border-line bg-cream px-4 py-3 text-sm outline-none focus:border-yellow-deep"
+            className="sm:col-span-2 rounded-xl border border-line bg-cream px-4 py-3 text-sm outline-none focus:border-primary"
           />
           <button
             type="submit"
-            className="sm:col-span-2 rounded-full bg-ink py-3.5 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+            className="sm:col-span-2 rounded-full bg-ink py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
           >
             Send Message
           </button>
@@ -81,7 +81,7 @@ export default function ContactPage() {
             >
               <summary className="flex cursor-pointer list-none items-center justify-between font-semibold">
                 {f.q}
-                <span className="text-yellow-deep transition group-open:rotate-45">
+                <span className="text-primary-hover transition group-open:rotate-45">
                   +
                 </span>
               </summary>
@@ -110,7 +110,7 @@ export default function ContactPage() {
           href={SITE.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="ml-auto flex items-center gap-1 font-semibold text-ink hover:text-yellow-deep"
+          className="ml-auto flex items-center gap-1 font-semibold text-ink hover:text-primary-hover"
         >
           <Camera className="h-4 w-4" /> {SITE.instagramHandle}
         </a>
@@ -138,7 +138,7 @@ function ContactCard({
       className="flex flex-col items-center gap-2 rounded-2xl border border-line bg-white p-6 text-center transition hover:-translate-y-1 hover:shadow-md"
     >
       <span className="grid h-12 w-12 place-items-center rounded-2xl bg-cream">
-        <Icon className="h-6 w-6 text-yellow-deep" />
+        <Icon className="h-6 w-6 text-primary-hover" />
       </span>
       <span className="font-display font-black">{title}</span>
       <span className="text-sm text-muted">{value}</span>

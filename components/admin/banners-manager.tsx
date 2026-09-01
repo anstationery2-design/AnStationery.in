@@ -18,7 +18,7 @@ type BannerRow = {
 };
 
 const VARIANT_BG: Record<string, string> = {
-  yellow: "bg-yellow text-ink",
+  green: "bg-primary text-white",
   cream: "bg-cream-deep text-ink",
   photo: "bg-ink text-white",
   pastel: "bg-pastel-lilac text-ink",
@@ -30,7 +30,7 @@ const empty = {
   imageUrl: "",
   buttonText: "Shop Now",
   buttonUrl: "/shop",
-  variant: "yellow",
+  variant: "green",
   isActive: true,
   sortOrder: 99,
 };
@@ -92,14 +92,14 @@ export function BannersManager({ banners: initial }: { banners: BannerRow[] }) {
         <h2 className="font-display text-2xl font-black">Banners</h2>
         <button
           onClick={() => setCreating((v) => !v)}
-          className="ml-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+          className="ml-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
         >
           <Plus className="h-4 w-4" /> Add Banner
         </button>
       </div>
 
       {creating && (
-        <div className="rounded-2xl border border-yellow-deep bg-white p-5">
+        <div className="rounded-2xl border border-primary bg-white p-5">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="font-display font-black">New Banner</h3>
             <button onClick={() => setCreating(false)} className="grid h-8 w-8 place-items-center rounded-full hover:bg-cream">
@@ -107,7 +107,7 @@ export function BannersManager({ banners: initial }: { banners: BannerRow[] }) {
             </button>
           </div>
           <BannerFields value={draft} onChange={setDraft} />
-          <button onClick={create} className="mt-3 rounded-full bg-ink px-5 py-2 text-sm font-bold text-white hover:bg-yellow hover:text-ink">
+          <button onClick={create} className="mt-3 rounded-full bg-ink px-5 py-2 text-sm font-bold text-white hover:bg-primary-hover hover:text-white">
             Create Banner
           </button>
         </div>
@@ -237,4 +237,4 @@ function BannerFields({
 }
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-cream px-3 py-2 text-sm outline-none focus:border-yellow-deep";
+  "w-full rounded-xl border border-line bg-cream px-3 py-2 text-sm outline-none focus:border-primary";

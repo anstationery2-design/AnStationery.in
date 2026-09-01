@@ -20,6 +20,11 @@ const OrderSchema = z.object({
   state: z.string().min(2, "Please enter your state"),
   pincode: z.string().regex(/^\d{6}$/, "Enter a valid 6-digit pincode"),
   lines: z.array(LineSchema).min(1, "Your cart is empty"),
+  // Payment fields
+  paymentMethod: z.enum(["COD", "RAZORPAY"]).optional().default("COD"),
+  razorpayOrderId: z.string().optional().default(""),
+  razorpayPaymentId: z.string().optional().default(""),
+  razorpaySignature: z.string().optional().default(""),
 });
 
 export async function POST(request: Request) {
@@ -66,6 +71,10 @@ export async function POST(request: Request) {
     p_lines: data.lines.map((l) => ({ slug: l.slug, quantity: l.quantity })),
     p_shipping_threshold: SITE.freeShippingThreshold,
     p_shipping_fee: SITE.shippingFee,
+    p_payment_method: data.paymentMethod,
+    p_razorpay_order_id: data.razorpayOrderId || null,
+    p_razorpay_payment_id: data.razorpayPaymentId || null,
+    p_razorpay_signature: data.razorpaySignature || null,
   });
 
   if (error) {
@@ -96,7 +105,7 @@ export async function POST(request: Request) {
     order_number: order?.orderNumber ?? null,
     type: "ADMIN",
     title: "New Order Received",
-    message: `New order #${order?.orderNumber ?? ""} for Rs. ${order?.totalAmount ?? 0} from ${data.customerName}.`,
+    message: `New order #${order?.orderNumber ?? ""} for Rs. ${order?.totalAmount ?? 0} from ${data.customerName}. Payment: ${data.paymentMethod}`,
     status: "NEW",
     is_read: false,
   });

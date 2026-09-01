@@ -54,7 +54,7 @@ export function ProductCard({ product }: { product: Product }) {
             </span>
           )}
           {off > 0 && !soldOut && (
-            <span className="rounded-full bg-yellow px-2.5 py-1 text-[10px] font-black text-ink shadow-sm">
+            <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-black text-white shadow-sm">
               {off}% OFF
             </span>
           )}
@@ -70,14 +70,14 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col p-3.5">
         <div className="mb-1 flex items-center gap-1 text-xs text-muted">
-          <Star className="h-3.5 w-3.5 fill-yellow text-yellow" />
+          <Star className="h-3.5 w-3.5 fill-yellow text-primary" />
           <span className="font-semibold text-ink">{product.rating}</span>
           <span>({product.reviewCount})</span>
         </div>
 
         <Link
           href={`/products/${product.slug}`}
-          className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-snug hover:text-yellow-deep"
+          className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-snug hover:text-primary-hover"
         >
           {product.name}
         </Link>
@@ -106,7 +106,7 @@ export function ProductCard({ product }: { product: Product }) {
             "mt-3 flex items-center justify-center gap-2 rounded-full py-2.5 text-sm font-bold transition",
             soldOut
               ? "cursor-not-allowed bg-cream text-muted"
-              : "bg-ink text-white hover:bg-yellow hover:text-ink",
+              : "bg-ink text-white hover:bg-primary-hover hover:text-white",
           )}
         >
           <ShoppingBag className="h-4 w-4" />

@@ -20,7 +20,7 @@ export default function CartPage() {
         </p>
         <Link
           href="/shop"
-          className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+          className="inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
         >
           Start Shopping <ArrowRight className="h-4 w-4" />
         </Link>
@@ -135,7 +135,7 @@ export default function CartPage() {
           </dl>
           <Link
             href="/checkout"
-            className="mt-5 flex items-center justify-center gap-2 rounded-full bg-yellow py-3.5 font-display text-sm font-bold text-ink transition hover:bg-yellow-deep"
+            className="mt-5 flex items-center justify-center gap-2 rounded-full bg-primary py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover"
           >
             <ShoppingBag className="h-4 w-4" /> Checkout
           </Link>

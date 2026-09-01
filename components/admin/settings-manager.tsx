@@ -76,7 +76,7 @@ export function SettingsManager() {
               <input
                 value={config[f.key] ?? ""}
                 onChange={(e) => setConfig({ ...config, [f.key]: e.target.value })}
-                className="w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-yellow-deep"
+                className="w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-primary"
               />
             </label>
           ))}
@@ -84,7 +84,7 @@ export function SettingsManager() {
         <button
           onClick={save}
           disabled={saving}
-          className="mt-4 flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-white transition hover:bg-yellow hover:text-ink disabled:opacity-60"
+          className="mt-4 flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white disabled:opacity-60"
         >
           {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           Save Settings

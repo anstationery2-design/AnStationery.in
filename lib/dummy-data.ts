@@ -149,7 +149,7 @@ export const products: Product[] = [
     imageIds: [
       "1513885535751-8b9238bd345a",
       "1503676263721-b1a42a1f5f0e",
-      "1583485088034-694b469c0859",
+      "1549465221-14a5cb0b3902",
       "1531346878377-a5be20888e57",
     ],
   }),
@@ -174,7 +174,7 @@ export const products: Product[] = [
     reviewCount: 38,
     createdAt: "2026-08-15T00:00:00.000Z",
     imageIds: [
-      "1583485088034-694b469c0859",
+      "1549465221-14a5cb0b3902",
       "1456735190827-d1262f71b8a3",
       "1517849845537-4d257902454a",
     ],
@@ -277,7 +277,7 @@ export const products: Product[] = [
     imageIds: [
       "1517849845537-4d257902454a",
       "1456735190827-d1262f71b8a3",
-      "1583485088034-694b469c0859",
+      "1549465221-14a5cb0b3902",
     ],
   }),
   P({
@@ -330,7 +330,7 @@ export const products: Product[] = [
       "1513885535751-8b9238bd345a",
       "1544816155-12df9643f363",
       "1531346878377-a5be20888e57",
-      "1583485088034-694b469c0859",
+      "1549465221-14a5cb0b3902",
     ],
   }),
   P({
@@ -393,8 +393,8 @@ export const banners: Banner[] = [
     subtitle: "120+ cute products just landed \u2728",
     buttonText: "Shop New",
     buttonUrl: "/new",
-    variant: "yellow",
-    accent: "from-yellow to-yellow-deep",
+    variant: "green",
+    accent: "from-primary to-primary-hover",
     isActive: true,
     sortOrder: 1,
   },
@@ -460,7 +460,7 @@ export const reviews: Review[] = [
 export const instagramImages = [
   "1531346878377-a5be20888e57",
   "1503676263721-b1a42a1f5f0e",
-  "1583485088034-694b469c0859",
+  "1549465221-14a5cb0b3902",
   "1513885535751-8b9238bd345a",
   "1503454537195-1dc81782c7c1",
   "1544816155-12df9643f363",

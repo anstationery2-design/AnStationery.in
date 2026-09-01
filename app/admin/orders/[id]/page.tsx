@@ -18,6 +18,10 @@ type RawOrder = {
   shipping_amount: number;
   total_amount: number;
   status: string;
+  payment_method: string | null;
+  payment_status: string | null;
+  razorpay_order_id: string | null;
+  razorpay_payment_id: string | null;
   created_at: string;
   items: {
     id: string;
@@ -60,6 +64,10 @@ export default async function OrderDetailPage({
         shippingAmount: order.shipping_amount,
         totalAmount: order.total_amount,
         status: order.status,
+        paymentMethod: order.payment_method,
+        paymentStatus: order.payment_status,
+        razorpayOrderId: order.razorpay_order_id,
+        razorpayPaymentId: order.razorpay_payment_id,
         createdAt: order.created_at,
         items: order.items.map((it) => ({
           id: it.id,

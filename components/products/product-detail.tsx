@@ -75,7 +75,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   onClick={() => setActive(i)}
                   className={cn(
                     "relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 bg-cream transition",
-                    i === active ? "border-yellow-deep" : "border-line",
+                    i === active ? "border-primary" : "border-line",
                   )}
                   aria-label={`View image ${i + 1}`}
                 >
@@ -105,7 +105,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   key={i}
                   className={`h-4 w-4 ${
                     i < Math.round(product.rating)
-                      ? "fill-yellow text-yellow"
+                      ? "fill-yellow text-primary"
                       : "text-line"
                   }`}
                 />
@@ -124,7 +124,7 @@ export function ProductDetail({ product }: { product: Product }) {
                 <span className="text-lg text-muted line-through">
                   {formatINR(product.originalPrice)}
                 </span>
-                <span className="rounded-full bg-yellow px-2.5 py-1 text-xs font-black text-ink">
+                <span className="rounded-full bg-primary px-2.5 py-1 text-xs font-black text-white">
                   {off}% OFF
                 </span>
               </>
@@ -180,14 +180,14 @@ export function ProductDetail({ product }: { product: Product }) {
 
               <button
                 onClick={() => add(toCartSnapshot(product), qty)}
-                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
               >
                 <ShoppingBag className="h-4 w-4" />
                 Add to Cart
               </button>
               <button
                 onClick={handleBuyNow}
-                className="flex-1 rounded-full bg-yellow px-6 py-3.5 font-display text-sm font-bold text-ink transition hover:bg-yellow-deep"
+                className="flex-1 rounded-full bg-primary px-6 py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover"
               >
                 Buy Now
               </button>
@@ -206,7 +206,7 @@ export function ProductDetail({ product }: { product: Product }) {
               { icon: ShieldCheck, label: "Secure Checkout" },
             ].map((t) => (
               <div key={t.label} className="flex flex-col items-center gap-1.5">
-                <t.icon className="h-5 w-5 text-yellow-deep" />
+                <t.icon className="h-5 w-5 text-primary-hover" />
                 <span className="text-xs font-semibold text-muted">
                   {t.label}
                 </span>

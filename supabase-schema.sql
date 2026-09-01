@@ -1,32 +1,25 @@
 -- ============================================================
--- AN STATIONERY — COMPLETE SUPABASE SCHEMA + SEED
+-- AN STATIONERY — SUPABASE SCHEMA (NON-DESTRUCTIVE + NO SEED)
 -- ============================================================
 -- HOW TO USE:
 --   1. Open Supabase Dashboard → SQL Editor
 --   2. Paste this entire file
 --   3. Click "Run"
---   4. All tables, policies, functions, and seed data are created
+--
+--   ★ SAFE TO RE-RUN. This file NEVER drops tables and NEVER deletes
+--     existing rows. It only creates objects that are missing
+--     (CREATE TABLE IF NOT EXISTS / CREATE INDEX IF NOT EXISTS, and
+--     guarded policies/triggers). Your live data is always preserved.
+--
+--   ★ NO DUMMY DATA. No demo products, categories, banners, reviews
+--     or settings are inserted. All content is added from the admin
+--     panel by the store owner.
 -- ============================================================
-
--- 0. CLEANUP (idempotent — safe to re-run)
-DROP TABLE IF EXISTS notifications CASCADE;
-DROP TABLE IF EXISTS site_config CASCADE;
-DROP TABLE IF EXISTS reviews CASCADE;
-DROP TABLE IF EXISTS banners CASCADE;
-DROP TABLE IF EXISTS shipments CASCADE;
-DROP TABLE IF EXISTS order_items CASCADE;
-DROP TABLE IF EXISTS orders CASCADE;
-DROP TABLE IF EXISTS product_images CASCADE;
-DROP TABLE IF EXISTS products CASCADE;
-DROP TABLE IF EXISTS categories CASCADE;
-DROP TABLE IF EXISTS users CASCADE;
-DROP FUNCTION IF EXISTS create_order(text, text, text, text, text, text, text, jsonb, integer, integer);
-DROP FUNCTION IF EXISTS update_updated_at();
 
 -- 1. EXTENSIONS
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 2. UPDATED_AT helper
+-- 2. UPDATED_AT helper (idempotent)
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -36,11 +29,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- ============================================================
--- 3. TABLES
+-- 3. TABLES (IF NOT EXISTS → existing data is preserved)
 -- ============================================================
 
 -- USERS (admin)
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email         TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
@@ -50,7 +43,7 @@ CREATE TABLE users (
 );
 
 -- CATEGORIES
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name        TEXT NOT NULL,
   slug        TEXT UNIQUE NOT NULL,
@@ -64,7 +57,7 @@ CREATE TABLE categories (
 );
 
 -- PRODUCTS
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
   id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name           TEXT NOT NULL,
   slug           TEXT UNIQUE NOT NULL,
@@ -88,7 +81,7 @@ CREATE TABLE products (
 );
 
 -- PRODUCT IMAGES (multi-image support)
-CREATE TABLE product_images (
+CREATE TABLE IF NOT EXISTS product_images (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
   url        TEXT NOT NULL,
@@ -99,7 +92,7 @@ CREATE TABLE product_images (
 );
 
 -- ORDERS
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_number    TEXT UNIQUE NOT NULL,
   customer_name   TEXT NOT NULL,
@@ -117,8 +110,19 @@ CREATE TABLE orders (
   updated_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- ============================================================
+-- 3b. PAYMENT COLUMNS ON ORDERS (NON-DESTRUCTIVE — re-run safe)
+--    ALTER TABLE ADD COLUMN IF NOT EXISTS guarantees existing
+--    rows keep their current values and no table is ever dropped.
+-- ============================================================
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_method   TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status   TEXT DEFAULT 'PENDING';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS razorpay_order_id   TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS razorpay_payment_id TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS razorpay_signature  TEXT;
+
 -- ORDER ITEMS (with price/name snapshots for historical accuracy)
-CREATE TABLE order_items (
+CREATE TABLE IF NOT EXISTS order_items (
   id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id             UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
   product_id           UUID REFERENCES products(id),
@@ -129,7 +133,7 @@ CREATE TABLE order_items (
 );
 
 -- SHIPMENTS (manual shipping)
-CREATE TABLE shipments (
+CREATE TABLE IF NOT EXISTS shipments (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   order_id        UUID UNIQUE NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
   courier_name    TEXT,
@@ -141,7 +145,7 @@ CREATE TABLE shipments (
 );
 
 -- BANNERS (homepage promotional posters)
-CREATE TABLE banners (
+CREATE TABLE IF NOT EXISTS banners (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title       TEXT NOT NULL,
   subtitle    TEXT,
@@ -156,7 +160,7 @@ CREATE TABLE banners (
 );
 
 -- REVIEWS / TESTIMONIALS
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name       TEXT NOT NULL,
   city       TEXT,
@@ -169,7 +173,7 @@ CREATE TABLE reviews (
 );
 
 -- SITE CONFIG (single source of truth for business settings)
-CREATE TABLE site_config (
+CREATE TABLE IF NOT EXISTS site_config (
   id    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   key   TEXT UNIQUE NOT NULL,
   value TEXT NOT NULL
@@ -179,7 +183,7 @@ CREATE TABLE site_config (
 -- One row per event: order placed, status changed (shipped, out for
 -- delivery, delivered, cancelled), etc. Keyed to the recipient email
 -- so both customers and the admin can read their own latest updates.
-CREATE TABLE notifications (
+CREATE TABLE IF NOT EXISTS notifications (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_email   TEXT NOT NULL,
   order_id     UUID REFERENCES orders(id) ON DELETE CASCADE,
@@ -193,38 +197,44 @@ CREATE TABLE notifications (
 );
 
 -- ============================================================
--- 4. INDEXES
+-- 4. INDEXES (IF NOT EXISTS → idempotent)
 -- ============================================================
-CREATE INDEX idx_products_category    ON products(category_id);
-CREATE INDEX idx_products_trending    ON products(is_trending) WHERE deleted_at IS NULL;
-CREATE INDEX idx_products_new         ON products(is_new) WHERE deleted_at IS NULL;
-CREATE INDEX idx_products_bestseller  ON products(is_best_seller) WHERE deleted_at IS NULL;
-CREATE INDEX idx_products_featured    ON products(is_featured) WHERE deleted_at IS NULL;
-CREATE INDEX idx_product_images_pid   ON product_images(product_id);
-CREATE INDEX idx_orders_status        ON orders(status);
-CREATE INDEX idx_orders_created       ON orders(created_at);
-CREATE INDEX idx_order_items_order    ON order_items(order_id);
-CREATE INDEX idx_notifications_user   ON notifications(user_email, created_at DESC);
-CREATE INDEX idx_notifications_unread ON notifications(user_email) WHERE is_read = FALSE;
+CREATE INDEX IF NOT EXISTS idx_products_category    ON products(category_id);
+CREATE INDEX IF NOT EXISTS idx_products_trending    ON products(is_trending) WHERE deleted_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_products_new         ON products(is_new) WHERE deleted_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_products_bestseller  ON products(is_best_seller) WHERE deleted_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_products_featured    ON products(is_featured) WHERE deleted_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_product_images_pid   ON product_images(product_id);
+CREATE INDEX IF NOT EXISTS idx_orders_status        ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_created       ON orders(created_at);
+CREATE INDEX IF NOT EXISTS idx_order_items_order    ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user   ON notifications(user_email, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_notifications_unread ON notifications(user_email) WHERE is_read = FALSE;
 
 -- ============================================================
--- 5. TRIGGERS for updated_at
+-- 5. TRIGGERS for updated_at (DROP + CREATE → idempotent, safe)
 -- ============================================================
+DROP TRIGGER IF EXISTS trg_categories_updated  ON categories;
 CREATE TRIGGER trg_categories_updated  BEFORE UPDATE ON categories  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+DROP TRIGGER IF EXISTS trg_products_updated    ON products;
 CREATE TRIGGER trg_products_updated    BEFORE UPDATE ON products    FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+DROP TRIGGER IF EXISTS trg_orders_updated      ON orders;
 CREATE TRIGGER trg_orders_updated      BEFORE UPDATE ON orders      FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+DROP TRIGGER IF EXISTS trg_shipments_updated   ON shipments;
 CREATE TRIGGER trg_shipments_updated   BEFORE UPDATE ON shipments   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+DROP TRIGGER IF EXISTS trg_banners_updated     ON banners;
 CREATE TRIGGER trg_banners_updated     BEFORE UPDATE ON banners     FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+DROP TRIGGER IF EXISTS trg_users_updated       ON users;
 CREATE TRIGGER trg_users_updated       BEFORE UPDATE ON users       FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- ============================================================
--- 6. ROW LEVEL SECURITY
+-- 6. ROW LEVEL SECURITY (idempotent — ENABLE on existing tables)
 -- ============================================================
--- DEMO MODE: permissive policies so the publishable (anon) key
--- can read and write. For PRODUCTION, restrict writes to the
--- service role key or authenticated admin users.
--- ============================================================
-
 ALTER TABLE categories     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products       ENABLE ROW LEVEL SECURITY;
 ALTER TABLE product_images ENABLE ROW LEVEL SECURITY;
@@ -237,30 +247,43 @@ ALTER TABLE site_config    ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE users          ENABLE ROW LEVEL SECURITY;
 
--- Allow all operations for the anon role (demo)
+-- Allow all operations for the anon/authenticated roles.
+-- Storage of policies is idempotent: drop-if-exists then recreate.
+DROP POLICY IF EXISTS "anon_all_categories"   ON categories;
 CREATE POLICY "anon_all_categories"   ON categories   FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_products"     ON products;
 CREATE POLICY "anon_all_products"     ON products     FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_prod_images"  ON product_images;
 CREATE POLICY "anon_all_prod_images"  ON product_images FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_orders"       ON orders;
 CREATE POLICY "anon_all_orders"       ON orders        FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_order_items"  ON order_items;
 CREATE POLICY "anon_all_order_items"  ON order_items   FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_shipments"    ON shipments;
 CREATE POLICY "anon_all_shipments"    ON shipments     FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_banners"      ON banners;
 CREATE POLICY "anon_all_banners"      ON banners       FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_reviews"      ON reviews;
 CREATE POLICY "anon_all_reviews"      ON reviews       FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_site_config"  ON site_config;
 CREATE POLICY "anon_all_site_config"  ON site_config   FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_all_notifications" ON notifications;
 CREATE POLICY "anon_all_notifications" ON notifications FOR ALL USING (TRUE) WITH CHECK (TRUE);
+
+DROP POLICY IF EXISTS "anon_no_users"         ON users;
 CREATE POLICY "anon_no_users"         ON users         FOR ALL USING (FALSE) WITH CHECK (FALSE);
 
 -- ============================================================
--- 6b. EXPLICIT GRANTS
--- ============================================================
--- The app uses the Supabase publishable (anon) key from the browser
--- bundle for BOTH storefront reads AND server-side admin CRUD, and it
--- calls create_order() via rpc(). Without these grants the anon role
--- would silently get "permission denied" on tables, sequences, or the
--- RPC even though the RLS policies above allow the rows.
---   >> This matches the current app architecture (works out of the box).
---   >> To HARDEN for production, switch admin writes + create_order to the
---      service_role key and drop the anon INSERT/UPDATE/DELETE grants below.
+-- 6b. EXPLICIT GRANTS (idempotent)
 -- ============================================================
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
 GRANT ALL  ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
@@ -271,7 +294,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authen
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
 
 -- ============================================================
--- 7. CREATE_ORDER RPC (atomic order + stock decrement)
+-- 7. CREATE_ORDER RPC (atomic order + stock decrement + payment)
 -- ============================================================
 CREATE OR REPLACE FUNCTION create_order(
   p_customer_name    TEXT,
@@ -283,7 +306,11 @@ CREATE OR REPLACE FUNCTION create_order(
   p_pincode          TEXT,
   p_lines            JSONB,
   p_shipping_threshold INTEGER DEFAULT 499,
-  p_shipping_fee        INTEGER DEFAULT 49
+  p_shipping_fee        INTEGER DEFAULT 49,
+  p_payment_method     TEXT DEFAULT 'COD',
+  p_razorpay_order_id   TEXT DEFAULT NULL,
+  p_razorpay_payment_id TEXT DEFAULT NULL,
+  p_razorpay_signature  TEXT DEFAULT NULL
 ) RETURNS JSONB AS $$
 DECLARE
   v_order_id    UUID;
@@ -296,6 +323,7 @@ DECLARE
   v_item_sub    INTEGER;
   v_items       JSONB := '[]'::JSONB;
   v_primary_url TEXT;
+  v_payment_status TEXT;
 BEGIN
   -- Generate order number
   v_order_number := 'AN-' || LPAD((EXTRACT(EPOCH FROM NOW())::BIGINT % 1000000)::TEXT, 6, '0') || LPAD((RANDOM() * 90 + 10)::INT::TEXT, 2, '0');
@@ -327,9 +355,16 @@ BEGIN
   END IF;
   v_total := v_subtotal + v_shipping;
 
-  -- Create order
-  INSERT INTO orders (order_number, customer_name, customer_phone, customer_email, address, city, state, pincode, subtotal, shipping_amount, total_amount, status)
-  VALUES (v_order_number, p_customer_name, p_customer_phone, NULLIF(p_customer_email, ''), p_address, p_city, p_state, p_pincode, v_subtotal, v_shipping, v_total, 'NEW')
+  -- Determine payment status based on method
+  IF p_payment_method = 'RAZORPAY' AND p_razorpay_payment_id IS NOT NULL THEN
+    v_payment_status := 'PAID';
+  ELSE
+    v_payment_status := 'PENDING';
+  END IF;
+
+  -- Create order (with payment columns)
+  INSERT INTO orders (order_number, customer_name, customer_phone, customer_email, address, city, state, pincode, subtotal, shipping_amount, total_amount, status, payment_method, payment_status, razorpay_order_id, razorpay_payment_id, razorpay_signature)
+  VALUES (v_order_number, p_customer_name, p_customer_phone, NULLIF(p_customer_email, ''), p_address, p_city, p_state, p_pincode, v_subtotal, v_shipping, v_total, 'NEW', p_payment_method, v_payment_status, NULLIF(p_razorpay_order_id, ''), NULLIF(p_razorpay_payment_id, ''), NULLIF(p_razorpay_signature, ''))
   RETURNING id INTO v_order_id;
 
   -- Create order items + decrement stock + build response
@@ -362,221 +397,35 @@ BEGIN
   END LOOP;
 
   RETURN jsonb_build_object(
-    'orderNumber',     v_order_number,
-    'customerName',    p_customer_name,
-    'customerPhone',   p_customer_phone,
-    'customerEmail',   NULLIF(p_customer_email, ''),
-    'address',         p_address,
-    'city',            p_city,
-    'state',           p_state,
-    'pincode',         p_pincode,
-    'items',           v_items,
-    'subtotal',        v_subtotal,
-    'shippingAmount',  v_shipping,
-    'totalAmount',     v_total,
-    'status',          'NEW',
-    'createdAt',       NOW()
+    'orderNumber',       v_order_number,
+    'customerName',      p_customer_name,
+    'customerPhone',     p_customer_phone,
+    'customerEmail',     NULLIF(p_customer_email, ''),
+    'address',           p_address,
+    'city',              p_city,
+    'state',             p_state,
+    'pincode',           p_pincode,
+    'items',             v_items,
+    'subtotal',          v_subtotal,
+    'shippingAmount',    v_shipping,
+    'totalAmount',       v_total,
+    'status',            'NEW',
+    'paymentMethod',     p_payment_method,
+    'paymentStatus',     v_payment_status,
+    'createdAt',         NOW()
   );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- ============================================================
--- 8. SEED DATA
--- ============================================================
-
--- 8a. CATEGORIES
-INSERT INTO categories (name, slug, emoji, description, accent, is_active) VALUES
-('Diaries',      'diaries',      '📓', 'Aesthetic journals & planners',  'pastel-pink',  TRUE),
-('Stationery',   'stationery',   '✏️', 'Pens, pencils & desk cute',      'pastel-mint',  TRUE),
-('Gifts',        'gifts',        '🎁', 'Ready-to-gift cute boxes',       'pastel-lilac', TRUE),
-('Accessories',  'accessories',  '🎒', 'Stickers, pouches & more',       'pastel-peach', TRUE),
-('Desk',         'desk',         '💻', 'Workspace cuteness',              'pastel-sky',   TRUE);
-
--- 8b. PRODUCTS
-INSERT INTO products (name, slug, description, price, original_price, stock, sku, badge, is_active, is_featured, is_trending, is_new, is_best_seller, rating, review_count, category_id) VALUES
-('Aesthetic Floral Journal', 'aesthetic-floral-journal',
- 'A beautifully crafted A5 journal with hand-drawn floral cover, 160 GSM cream pages, ribbon bookmark and lay-flat binding. Perfect for journaling, notes and doodles.',
- 399, 499, 25, 'C2C-DIARY-001', 'SALE', TRUE, TRUE, TRUE, FALSE, TRUE, 4.8, 106,
- (SELECT id FROM categories WHERE slug='diaries')),
-
-('Pastel Dream Planner', 'pastel-dream-planner',
- 'Undated daily planner with pastel section dividers, habit trackers, monthly goals and sticker sheet. Plan your cutest year yet.',
- 549, 699, 18, 'C2C-DIARY-002', 'HOT', TRUE, FALSE, TRUE, TRUE, FALSE, 4.7, 64,
- (SELECT id FROM categories WHERE slug='diaries')),
-
-('Cute Stationery Gift Box', 'cute-stationery-gift-box',
- 'Complete aesthetic stationery set with binder, pens, stickers, washi tape and a handwritten note card. The perfect gift for someone special, ready to gift.',
- 799, 999, 12, 'C2C-GIFT-001', 'BESTSELLER', TRUE, TRUE, TRUE, FALSE, TRUE, 4.9, 211,
- (SELECT id FROM categories WHERE slug='gifts')),
-
-('Rainbow Gel Pen Set', 'rainbow-gel-pen-set',
- 'Set of 12 smooth-flow gel pens in pastel rainbow shades. Quick-drying, smudge-free ink that glides on paper.',
- 249, 349, 40, 'C2C-STAT-001', 'NEW', TRUE, FALSE, FALSE, TRUE, FALSE, 4.6, 38,
- (SELECT id FROM categories WHERE slug='stationery')),
-
-('Kawaii Sticker Pack', 'kawaii-sticker-pack',
- '100+ waterproof cute stickers featuring doodles, stars, plants and smileys. Perfect for laptops, journals and phone cases.',
- 199, NULL, 60, 'C2C-ACC-001', 'TRENDING', TRUE, FALSE, TRUE, TRUE, FALSE, 4.8, 92,
- (SELECT id FROM categories WHERE slug='accessories')),
-
-('Mini Doodle Notebook (Pack of 3)', 'mini-doodle-notebook-pack-3',
- 'A pack of three pocket-sized doodle notebooks with cute covers. Ideal for on-the-go notes, lists and sketches.',
- 299, 399, 33, 'C2C-DIARY-003', 'SALE', TRUE, FALSE, FALSE, TRUE, TRUE, 4.7, 47,
- (SELECT id FROM categories WHERE slug='diaries')),
-
-('Cloud Washi Tape Collection', 'cloud-washi-tape-collection',
- 'Set of 8 decorative washi tapes in cloud, star and floral patterns. Add a cute touch to your journals and crafts.',
- 179, NULL, 0, 'C2C-ACC-002', 'SOLD OUT', TRUE, FALSE, TRUE, FALSE, FALSE, 4.9, 73,
- (SELECT id FROM categories WHERE slug='accessories')),
-
-('Star Dust Highlighters (6pc)', 'star-dust-highlighters-6pc',
- 'Six soft pastel highlighters with a mild, gentle ink. Perfect for colour-coding notes without bleeding through pages.',
- 219, 299, 7, 'C2C-STAT-002', 'HOT', TRUE, FALSE, TRUE, FALSE, FALSE, 4.5, 29,
- (SELECT id FROM categories WHERE slug='stationery')),
-
-('Cozy Desk Organiser Set', 'cozy-desk-organiser-set',
- 'Pastel desk organiser with compartments for pens, sticky notes and clips. Keep your workspace tidy and cute.',
- 649, 799, 15, 'C2C-DESK-001', 'NEW', TRUE, TRUE, FALSE, TRUE, FALSE, 4.7, 41,
- (SELECT id FROM categories WHERE slug='desk')),
-
-('Birthday Surprise Gift Hamper', 'birthday-surprise-gift-hamper',
- 'A curated birthday hamper with a journal, pens, stickers, chocolates and a personalised note. Delivered gift-ready.',
- 1099, 1399, 9, 'C2C-GIFT-002', 'BESTSELLER', TRUE, TRUE, FALSE, FALSE, TRUE, 4.9, 158,
- (SELECT id FROM categories WHERE slug='gifts')),
-
-('Mint Green Pencil Pouch', 'mint-green-pencil-pouch',
- 'Soft mint canvas pencil pouch with a cute smiley embroidered. Roomy enough for all your favourite pens.',
- 279, NULL, 28, 'C2C-ACC-003', 'TRENDING', TRUE, FALSE, TRUE, TRUE, FALSE, 4.6, 35,
- (SELECT id FROM categories WHERE slug='accessories')),
-
-('Sunshine Sticky Note Bundle', 'sunshine-sticky-note-bundle',
- 'Bundle of shaped sticky notes in sun, cloud and star designs. Brighten up your reminders and pages.',
- 159, 219, 50, 'C2C-STAT-003', 'SALE', TRUE, FALSE, FALSE, TRUE, FALSE, 4.4, 22,
- (SELECT id FROM categories WHERE slug='stationery'));
-
--- 8c. PRODUCT IMAGES (multi-image per product)
--- p1: Aesthetic Floral Journal
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='aesthetic-floral-journal'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Aesthetic Floral Journal view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='aesthetic-floral-journal'), 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80', 'Aesthetic Floral Journal view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='aesthetic-floral-journal'), 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=80', 'Aesthetic Floral Journal view 3', 2, FALSE),
-((SELECT id FROM products WHERE slug='aesthetic-floral-journal'), 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80', 'Aesthetic Floral Journal view 4', 3, FALSE);
-
--- p2: Pastel Dream Planner
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='pastel-dream-planner'), 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=80', 'Pastel Dream Planner view 3', 2, FALSE);
-
--- p3: Cute Stationery Gift Box
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 3', 2, FALSE),
-((SELECT id FROM products WHERE slug='cute-stationery-gift-box'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Cute Stationery Gift Box view 4', 3, FALSE);
-
--- p4: Rainbow Gel Pen Set
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='rainbow-gel-pen-set'), 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80', 'Rainbow Gel Pen Set view 3', 2, FALSE);
-
--- p5: Kawaii Sticker Pack
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='kawaii-sticker-pack'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Kawaii Sticker Pack view 3', 2, FALSE);
-
--- p6: Mini Doodle Notebook
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='mini-doodle-notebook-pack-3'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Mini Doodle Notebook view 3', 2, FALSE);
-
--- p7: Cloud Washi Tape
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='cloud-washi-tape-collection'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Cloud Washi Tape view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='cloud-washi-tape-collection'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Cloud Washi Tape view 2', 1, FALSE);
-
--- p8: Star Dust Highlighters
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='star-dust-highlighters-6pc'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Star Dust Highlighters view 3', 2, FALSE);
-
--- p9: Cozy Desk Organiser Set
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='cozy-desk-organiser-set'), 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=900&q=80', 'Cozy Desk Organiser view 3', 2, FALSE);
-
--- p10: Birthday Surprise Gift Hamper
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 3', 2, FALSE),
-((SELECT id FROM products WHERE slug='birthday-surprise-gift-hamper'), 'https://images.unsplash.com/photo-1517971129774-8a2b38fa128e?auto=format&fit=crop&w=900&q=80', 'Birthday Gift Hamper view 4', 3, FALSE);
-
--- p11: Mint Green Pencil Pouch
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='mint-green-pencil-pouch'), 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=900&q=80', 'Mint Green Pencil Pouch view 3', 2, FALSE);
-
--- p12: Sunshine Sticky Note Bundle
-INSERT INTO product_images (product_id, url, alt, sort_order, is_primary) VALUES
-((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 1', 0, TRUE),
-((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 2', 1, FALSE),
-((SELECT id FROM products WHERE slug='sunshine-sticky-note-bundle'), 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&q=80', 'Sunshine Sticky Note view 3', 2, FALSE);
-
--- 8d. BANNERS
-INSERT INTO banners (title, subtitle, button_text, button_url, variant, is_active, sort_order) VALUES
-('New Drop',             '120+ cute products just landed ✨',  'Shop New',      '/new',       'yellow',  TRUE, 1),
-('Gift Something Cute',  'Ready-to-gift hampers from ₹499 🎁','Shop Gifts',    '/gifts',     'pastel',  TRUE, 2),
-('20% Off Best Sellers', 'Limited time only — grab your favourites', 'Shop Trending', '/trending', 'cream', TRUE, 3);
-
--- 8e. REVIEWS
-INSERT INTO reviews (name, city, rating, text, product, is_active) VALUES
-('Ananya R.', 'Bengaluru', 5, 'Absolutely love the products! The floral journal is even prettier in person. Packaging was super cute too.', 'Aesthetic Floral Journal', TRUE),
-('Karthik M.', 'Chennai', 5, 'Gifted the stationery box to my sister and she was thrilled. Quality is premium and delivery was quick.', 'Cute Stationery Gift Box', TRUE),
-('Sneha P.', 'Pune', 5, 'The pastel planner keeps me so organised and it looks adorable on my desk. Worth every rupee.', 'Pastel Dream Planner', TRUE),
-('Riya S.', 'Delhi', 4, 'Cute stickers and fast shipping! My laptop looks so much happier now. Will order again.', 'Kawaii Sticker Pack', TRUE);
-
--- 8f. SITE CONFIG
-INSERT INTO site_config (key, value) VALUES
-('name',                  'AnStationery'),
-('tagline',               'Small Things. Big Smiles.'),
-('description',           'Discover trending, aesthetic and gift-worthy stationery made to brighten your everyday moments.'),
-('email',                 'anstationery2@gmail.com'),
-('phone',                 '+91 96996 43557'),
-('whatsapp',              '919699643557'),
-('instagram',             'https://www.instagram.com/crayons2couture/'),
-('instagramHandle',       '@crayons2couture'),
-('address',               'Mumbai, India'),
-('freeShippingThreshold', '499'),
-('shippingFee',           '49');
-
--- ============================================================
--- DONE! Your database is ready.
--- Tables: users, categories, products, product_images, orders,
---         order_items, shipments, banners, reviews, site_config,
---         notifications
--- RPC:    create_order() for atomic checkout (SECURITY DEFINER,
---         pinned search_path, grants applied for anon calls)
--- RLS:    Permissive anon policies + explicit grants so the app's
---         publishable-key calls work out of the box.
--- Storage: product images are stored in a public Supabase Storage
---         bucket ("product-images"). ONCE per project, run the block
---         below to create the bucket + RLS policies. Without it the
---         admin image uploader returns HTTP 500.
---
--- NOTE: for production, move admin writes + create_order to the
--- service_role key and drop the anon INSERT/UPDATE/DELETE rights
--- (keep only anon SELECT for the storefront).
+-- 8. NO SEED DATA
+--    Nothing is inserted above. Categories, products, product
+--    images, banners, reviews and settings are all added through
+--    the admin panel so nothing is ever wiped or overridden.
 -- ============================================================
 
 -- ============================================================
--- 9. STORAGE: PRODUCT IMAGES (run once)
+-- 9. STORAGE: PRODUCT IMAGES (run once, idempotent)
 --    Enables app/api/admin/upload → Supabase Storage, so uploads
 --    persist on Vercel (no local disk). Paste into SQL Editor + Run.
 -- ============================================================
@@ -597,9 +446,8 @@ SET public = true,
 
 -- Allow the app's publishable (anon) key to upload, read and manage
 -- objects inside the product-images bucket.
---   NOTE: storage.objects is NOT dropped by the cleanup above, so these
---   policies must be created idempotently — each one is guarded so a
---   re-run skips it instead of failing with "policy already exists".
+--   NOTE: storage.objects is NOT dropped by this script, so these
+--   policies are guarded — a re-run skips any that already exist.
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -655,3 +503,22 @@ BEGIN
   END IF;
 END;
 $$;
+
+-- ============================================================
+-- DONE! Your database is ready.
+--   Tables: users, categories, products, product_images, orders,
+--           order_items, shipments, banners, reviews, site_config,
+--           notifications
+--   RPC:    create_order() for atomic checkout (SECURITY DEFINER,
+--           pinned search_path, grants applied for anon calls)
+--   RLS:    Permissive anon policies + explicit grants so the app's
+--           publishable-key calls work out of the box.
+--   Storage: product images in a public "product-images" bucket.
+--
+--   ★ This script is NON-DESTRUCTIVE: re-running it never drops a
+--     table or deletes a row. It only creates missing objects.
+--   ★ NO SEED DATA: content is added via the admin panel.
+--   NOTE: for production, move admin writes + create_order to the
+--   service_role key and drop the anon INSERT/UPDATE/DELETE rights
+--   (keep only anon SELECT for the storefront).
+-- ============================================================

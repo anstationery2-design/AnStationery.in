@@ -16,7 +16,7 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
       <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:py-20 lg:px-8">
         {/* Copy */}
         <div className="relative">
-          <span className="inline-flex items-center gap-2 rounded-full bg-yellow px-3 py-1.5 text-xs font-black uppercase tracking-wide text-ink shadow-sm">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-xs font-black uppercase tracking-wide text-white shadow-sm">
             <Sparkles className="h-3.5 w-3.5" /> New Drop Live
           </span>
 
@@ -25,11 +25,11 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
             <br />
             <span className="relative inline-block">
               <span className="relative z-10">Big Smiles.</span>
-              <span className="absolute inset-x-0 bottom-2 -z-0 h-4 rounded-full bg-yellow/70" />
+              <span className="absolute inset-x-0 bottom-2 -z-0 h-4 rounded-full bg-primary/70" />
             </span>
           </h1>
 
-          <p className="mt-2 font-accent text-xl font-bold text-yellow-deep sm:mt-3 sm:text-2xl">
+          <p className="mt-2 font-accent text-xl font-bold text-primary-hover sm:mt-3 sm:text-2xl">
             cute things for everyday moments
           </p>
 
@@ -41,7 +41,7 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/shop"
-              className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+              className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
             >
               Shop Now
               <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
@@ -67,7 +67,7 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
             </div>
             <div>
               <div className="flex items-center gap-1 font-bold">
-                <Star className="h-4 w-4 fill-yellow text-yellow" /> 4.9
+                <Star className="h-4 w-4 fill-yellow text-primary" /> 4.9
               </div>
               <p className="text-xs text-muted">loved by 15K+ happy customers</p>
             </div>
@@ -117,7 +117,7 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
           <span className="absolute left-6 bottom-16 text-3xl">{"\u2728"}</span>
           <span className="absolute right-4 bottom-24 text-2xl">{"\ud83c\udf80"}</span>
           {/* price tag */}
-          <div className="absolute right-6 top-10 rotate-6 rounded-xl bg-yellow px-3 py-2 font-display text-sm font-black shadow-md">
+          <div className="absolute right-6 top-10 rotate-6 rounded-xl bg-primary px-3 py-2 font-display text-sm font-black shadow-md">
             from {"\u20b9"}199
           </div>
         </div>

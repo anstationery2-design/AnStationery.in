@@ -9,7 +9,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-      <p className="font-accent text-2xl font-bold text-yellow-deep">
+      <p className="font-accent text-2xl font-bold text-primary-hover">
         our little story
       </p>
       <h1 className="mt-1 font-display text-4xl font-black tracking-tight sm:text-5xl">
@@ -47,7 +47,7 @@ export default function AboutPage() {
 
       <Link
         href="/shop"
-        className="mt-10 inline-flex items-center gap-2 rounded-full bg-yellow px-7 py-3.5 font-display text-sm font-bold text-ink transition hover:bg-yellow-deep"
+        className="mt-10 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover"
       >
         Explore the shop {"\u2192"}
       </Link>

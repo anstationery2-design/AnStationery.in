@@ -40,11 +40,11 @@ export function UserLoginForm() {
     <div className="flex min-h-screen items-center justify-center bg-cream px-4">
       <div className="w-full max-w-md">
         <Link href="/" className="mb-6 flex items-center justify-center gap-2">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-yellow font-display text-xl font-black text-ink">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary font-display text-xl font-black text-white">
             A
           </span>
           <span className="font-display text-2xl font-black tracking-tight">
-            AN <span className="text-yellow-deep">Stationery</span>
+            AN <span className="text-primary-hover">Stationery</span>
           </span>
         </Link>
 
@@ -67,7 +67,7 @@ export function UserLoginForm() {
               <div className="mt-3 flex gap-2">
                 <Link
                   href="/account"
-                  className="flex-1 rounded-full bg-ink py-2 text-sm font-bold text-white hover:bg-yellow hover:text-ink"
+                  className="flex-1 rounded-full bg-ink py-2 text-sm font-bold text-white hover:bg-primary-hover hover:text-white"
                 >
                   My Account
                 </Link>
@@ -133,7 +133,7 @@ export function UserLoginForm() {
           <div className="mt-5 border-t border-line pt-4 text-center">
             <Link
               href="/account"
-              className="text-xs font-semibold text-muted hover:text-yellow-deep"
+              className="text-xs font-semibold text-muted hover:text-primary-hover"
             >
               View my account {"\u2192"}
             </Link>

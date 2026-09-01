@@ -13,7 +13,7 @@ export default async function GiftsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <header className="mb-6">
-        <p className="font-accent text-xl font-bold text-yellow-deep">
+        <p className="font-accent text-xl font-bold text-primary-hover">
           gift something cute
         </p>
         <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl">

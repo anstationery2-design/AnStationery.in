@@ -81,14 +81,14 @@ export function CategoriesManager({
         <h2 className="font-display text-2xl font-black">Categories</h2>
         <button
           onClick={() => setCreating((v) => !v)}
-          className="ml-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+          className="ml-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
         >
           <Plus className="h-4 w-4" /> Add Category
         </button>
       </div>
 
       {creating && (
-        <div className="rounded-2xl border border-yellow-deep bg-white p-5">
+        <div className="rounded-2xl border border-primary bg-white p-5">
           <h3 className="mb-3 font-display font-black">New Category</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <input
@@ -120,7 +120,7 @@ export function CategoriesManager({
             </select>
           </div>
           <div className="mt-3 flex gap-2">
-            <button onClick={create} className="rounded-full bg-ink px-5 py-2 text-sm font-bold text-white hover:bg-yellow hover:text-ink">
+            <button onClick={create} className="rounded-full bg-ink px-5 py-2 text-sm font-bold text-white hover:bg-primary-hover hover:text-white">
               Create
             </button>
             <button onClick={() => setCreating(false)} className="rounded-full border border-line px-5 py-2 text-sm font-semibold hover:bg-cream">
@@ -238,4 +238,4 @@ export function CategoriesManager({
 }
 
 const inputCls =
-  "w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-yellow-deep";
+  "w-full rounded-xl border border-line bg-cream px-4 py-2.5 text-sm outline-none focus:border-primary";

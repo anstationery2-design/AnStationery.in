@@ -56,7 +56,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 lg:flex-none">
           <span className="font-display text-base font-black tracking-tight sm:text-xl">
-            AN <span className="text-yellow-deep">Stationery</span>
+            AN <span className="text-primary-hover">Stationery</span>
           </span>
         </Link>
 
@@ -80,7 +80,7 @@ export function Header() {
               >
                 {link.label}
                 {active && (
-                  <span className="absolute inset-x-3 -bottom-0.5 h-1 rounded-full bg-yellow" />
+                  <span className="absolute inset-x-3 -bottom-0.5 h-1 rounded-full bg-primary" />
                 )}
               </Link>
             );
@@ -104,7 +104,7 @@ export function Header() {
           >
             {user ? (
               <>
-                <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-yellow font-display text-sm font-black text-ink">
+                <span className="grid h-8 w-8 place-items-center overflow-hidden rounded-full bg-primary font-display text-sm font-black text-white">
                   {user.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -133,7 +133,7 @@ export function Header() {
           >
             <ShoppingBag className="h-5 w-5" />
             {count > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-yellow px-1 text-[10px] font-black text-ink animate-pop">
+              <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-[10px] font-black text-white animate-pop">
                 {count}
               </span>
             )}
@@ -156,7 +156,7 @@ export function Header() {
                 onChange={(e) => setQuery(e.target.value)}
                 autoFocus
                 placeholder="Search for journals, pens, gifts..."
-                className="w-full rounded-full border border-line bg-cream py-3 pl-11 pr-4 text-sm outline-none focus:border-yellow-deep"
+                className="w-full rounded-full border border-line bg-cream py-3 pl-11 pr-4 text-sm outline-none focus:border-primary"
               />
             </div>
             <button
@@ -178,10 +178,10 @@ export function Header() {
               className="absolute inset-0 bg-ink/50 backdrop-blur-sm"
               onClick={() => setMobileOpen(false)}
             />
-            <div className="absolute left-0 top-0 flex h-full w-80 max-w-[85%] flex-col overflow-y-auto bg-yellow-soft p-5 shadow-2xl">
+            <div className="absolute left-0 top-0 flex h-full w-80 max-w-[85%] flex-col overflow-y-auto bg-primary-soft p-5 shadow-2xl">
               <div className="mb-6 flex items-center justify-between">
                 <span className="font-display text-lg font-black">
-                  AN <span className="text-yellow-deep">Stationery</span>
+                  AN <span className="text-primary-hover">Stationery</span>
                 </span>
                 <button
                   onClick={() => setMobileOpen(false)}
@@ -197,20 +197,20 @@ export function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-xl bg-white px-4 py-3 text-base font-bold text-ink shadow-sm transition hover:bg-yellow hover:text-ink"
+                    className="rounded-xl bg-white px-4 py-3 text-base font-bold text-ink shadow-sm transition hover:bg-primary-hover hover:text-white"
                   >
                     {link.label}
                   </Link>
                 ))}
               </nav>
-              <div className="mt-6 border-t border-yellow-deep/30 pt-4">
+              <div className="mt-6 border-t border-primary/30 pt-4">
                 <a
                   href={`https://wa.me/${SITE.whatsapp}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold shadow-sm"
                 >
-                  <Heart className="h-4 w-4 text-yellow-deep" /> Chat on WhatsApp
+                  <Heart className="h-4 w-4 text-primary-hover" /> Chat on WhatsApp
                 </a>
                 <Link
                   href={user ? "/account" : "/login"}
@@ -219,7 +219,7 @@ export function Header() {
                 >
                   {user ? (
                     <>
-                      <span className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full bg-yellow text-xs font-black text-ink">
+                      <span className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full bg-primary text-xs font-black text-white">
                         {user.image ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
@@ -235,7 +235,7 @@ export function Header() {
                     </>
                   ) : (
                     <>
-                      <User className="h-4 w-4 text-yellow-deep" /> Sign in / Account
+                      <User className="h-4 w-4 text-primary-hover" /> Sign in / Account
                     </>
                   )}
                 </Link>

@@ -100,11 +100,11 @@ export function ImageUploader({
         onClick={() => inputRef.current?.click()}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed p-8 text-center transition",
-          dragOver ? "border-yellow-deep bg-yellow-soft" : "border-line bg-cream hover:border-yellow-deep",
+          dragOver ? "border-primary bg-primary-soft" : "border-line bg-cream hover:border-primary",
         )}
       >
         {uploading ? (
-          <Loader2 className="h-8 w-8 animate-spin text-yellow-deep" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-hover" />
         ) : (
           <Upload className="h-8 w-8 text-muted" />
         )}
@@ -133,7 +133,7 @@ export function ImageUploader({
               key={img.id}
               className={cn(
                 "group relative aspect-square overflow-hidden rounded-xl border-2 bg-white",
-                img.isPrimary ? "border-yellow-deep" : "border-line",
+                img.isPrimary ? "border-primary" : "border-line",
               )}
             >
               <Image
@@ -144,7 +144,7 @@ export function ImageUploader({
                 className="object-cover"
               />
               {img.isPrimary && (
-                <span className="absolute left-1.5 top-1.5 rounded-full bg-yellow px-1.5 py-0.5 text-[9px] font-black text-ink">
+                <span className="absolute left-1.5 top-1.5 rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-black text-white">
                   PRIMARY
                 </span>
               )}
@@ -156,7 +156,7 @@ export function ImageUploader({
                     title="Set primary"
                     className={cn(
                       "grid h-6 w-6 place-items-center rounded-full",
-                      img.isPrimary ? "bg-yellow text-ink" : "bg-white/80 text-ink hover:bg-yellow",
+                      img.isPrimary ? "bg-primary text-white" : "bg-white/80 text-ink hover:bg-primary-hover",
                     )}
                   >
                     <Star className="h-3 w-3" />

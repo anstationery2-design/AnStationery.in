@@ -15,11 +15,11 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-yellow font-display text-lg font-black text-ink">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary font-display text-lg font-black text-white">
                 A
               </span>
               <span className="font-display text-xl font-black tracking-tight">
-                AN <span className="text-yellow-deep">Stationery</span>
+                AN <span className="text-primary-hover">Stationery</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
@@ -30,7 +30,7 @@ export function Footer() {
                 href={SITE.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="grid h-10 w-10 place-items-center rounded-full bg-white text-ink shadow-sm transition hover:bg-yellow"
+                className="grid h-10 w-10 place-items-center rounded-full bg-white text-ink shadow-sm transition hover:bg-primary-hover hover:text-white"
                 aria-label="Instagram"
               >
                 <Camera className="h-5 w-5" />
@@ -68,7 +68,7 @@ export function Footer() {
               <input
                 type="email"
                 placeholder="Your email"
-                className="w-full rounded-full border border-line bg-white px-4 py-2.5 text-sm outline-none focus:border-yellow-deep"
+                className="w-full rounded-full border border-line bg-white px-4 py-2.5 text-sm outline-none focus:border-primary"
               />
               <button
                 type="submit"

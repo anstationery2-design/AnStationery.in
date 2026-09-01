@@ -41,7 +41,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
         <h2 className="font-display text-2xl font-black">Products</h2>
         <Link
           href="/admin/products/new"
-          className="ml-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+          className="ml-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
         >
           <Plus className="h-4 w-4" /> Add Product
         </Link>
@@ -53,7 +53,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search products..."
-          className="w-full rounded-full border border-line bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-yellow-deep"
+          className="w-full rounded-full border border-line bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary"
         />
       </div>
 
@@ -111,7 +111,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
                         type="number"
                         value={stockValue}
                         onChange={(e) => setStockValue(e.target.value)}
-                        className="w-16 rounded-lg border border-line px-2 py-1 text-sm outline-none focus:border-yellow-deep"
+                        className="w-16 rounded-lg border border-line px-2 py-1 text-sm outline-none focus:border-primary"
                         autoFocus
                       />
                       <button
@@ -164,7 +164,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
                     {p.isActive ? "Active" : "Hidden"}
                   </span>
                   {p.badge && (
-                    <span className="ml-1 rounded-full bg-yellow px-2 py-0.5 text-[10px] font-black">
+                    <span className="ml-1 rounded-full bg-primary px-2 py-0.5 text-[10px] font-black">
                       {p.badge}
                     </span>
                   )}

@@ -20,6 +20,8 @@ type Order = {
   shippingAmount: number;
   totalAmount: number;
   status: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
 };
 
 const STEPS = [
@@ -54,7 +56,7 @@ export function OrderConfirmation() {
           Order Placed Successfully!
         </h1>
         <p className="mt-1 text-muted">Thank you for shopping with us.</p>
-        <p className="mt-3 rounded-full bg-yellow px-4 py-1.5 font-display text-sm font-black text-ink">
+        <p className="mt-3 rounded-full bg-primary px-4 py-1.5 font-display text-sm font-black text-white">
           Order #{orderNumber}
         </p>
       </div>
@@ -74,7 +76,7 @@ export function OrderConfirmation() {
                   <li key={step.key} className="flex flex-1 flex-col items-center gap-2 text-center">
                     <span
                       className={`grid h-10 w-10 place-items-center rounded-full ${
-                        active ? "bg-yellow text-ink" : "bg-cream text-muted"
+                        active ? "bg-primary text-white" : "bg-cream text-muted"
                       }`}
                     >
                       <step.icon className="h-5 w-5" />
@@ -137,6 +139,18 @@ export function OrderConfirmation() {
                 <dt>Total</dt>
                 <dd>{formatINR(order.totalAmount)}</dd>
               </div>
+              {order.paymentMethod && (
+                <div className="flex justify-between border-t border-line pt-2 text-sm">
+                  <dt className="text-muted">Payment</dt>
+                  <dd className="font-semibold">
+                    {order.paymentMethod === "RAZORPAY" ? (
+                      <span className="text-badge-new">Paid Online</span>
+                    ) : (
+                      <span>Cash on Delivery</span>
+                    )}
+                  </dd>
+                </div>
+              )}
             </dl>
           </div>
 
@@ -165,7 +179,7 @@ export function OrderConfirmation() {
       <div className="mt-8 flex justify-center gap-3">
         <Link
           href="/shop"
-          className="rounded-full bg-ink px-6 py-3 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink"
+          className="rounded-full bg-ink px-6 py-3 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white"
         >
           Continue Shopping
         </Link>

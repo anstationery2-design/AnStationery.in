@@ -11,7 +11,7 @@ export function GiftFeature({ product }: { product?: Product | null }) {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div className="grid items-center gap-8 overflow-hidden rounded-3xl bg-yellow-soft p-6 lg:grid-cols-2 lg:p-10">
+      <div className="grid items-center gap-8 overflow-hidden rounded-3xl bg-primary-soft p-6 lg:grid-cols-2 lg:p-10">
         <div className="relative">
           <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border-4 border-white bg-cream shadow-lg">
             <Image
@@ -29,7 +29,7 @@ export function GiftFeature({ product }: { product?: Product | null }) {
         </div>
 
         <div>
-          <p className="font-accent text-2xl font-bold text-yellow-deep">
+          <p className="font-accent text-2xl font-bold text-primary-hover">
             the perfect gift
           </p>
           <h2 className="mt-1 font-display text-3xl font-black leading-tight sm:text-4xl">

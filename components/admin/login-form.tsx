@@ -60,11 +60,11 @@ export function LoginForm() {
     <div className="flex min-h-screen items-center justify-center bg-cream px-4">
       <div className="w-full max-w-md">
         <Link href="/" className="mb-6 flex items-center justify-center gap-2">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-yellow font-display text-xl font-black text-ink">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary font-display text-xl font-black text-white">
             A
           </span>
           <span className="font-display text-2xl font-black tracking-tight">
-            AN <span className="text-yellow-deep">Stationery</span>
+            AN <span className="text-primary-hover">Stationery</span>
           </span>
         </Link>
 
@@ -90,7 +90,7 @@ export function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-line bg-cream py-3 pl-10 pr-4 text-sm outline-none focus:border-yellow-deep"
+                  className="w-full rounded-xl border border-line bg-cream py-3 pl-10 pr-4 text-sm outline-none focus:border-primary"
                 />
               </div>
             </label>
@@ -104,7 +104,7 @@ export function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-line bg-cream py-3 pl-10 pr-4 text-sm outline-none focus:border-yellow-deep"
+                  className="w-full rounded-xl border border-line bg-cream py-3 pl-10 pr-4 text-sm outline-none focus:border-primary"
                 />
               </div>
             </label>
@@ -112,7 +112,7 @@ export function LoginForm() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3.5 font-display text-sm font-bold text-white transition hover:bg-yellow hover:text-ink disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-ink py-3.5 font-display text-sm font-bold text-white transition hover:bg-primary-hover hover:text-white disabled:opacity-60"
             >
               {loading ? "Signing in..." : "Sign In"}
               {!loading && <ArrowRight className="h-4 w-4" />}
@@ -122,7 +122,7 @@ export function LoginForm() {
           {demo && (
             <button
               onClick={fillDemo}
-              className="mt-4 w-full rounded-xl bg-yellow-soft py-2.5 text-xs font-semibold text-ink-soft"
+              className="mt-4 w-full rounded-xl bg-primary-soft py-2.5 text-xs font-semibold text-ink-soft"
             >
               {"Demo mode \u2014 tap to fill demo credentials"}
             </button>

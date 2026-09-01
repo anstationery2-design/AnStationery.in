@@ -24,7 +24,7 @@ export default async function AdminOrdersPage() {
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <h2 className="font-display text-2xl font-black">Orders</h2>
-        <span className="rounded-full bg-yellow px-2.5 py-1 text-xs font-black text-ink">
+        <span className="rounded-full bg-primary px-2.5 py-1 text-xs font-black text-white">
           {orders.length}
         </span>
       </div>

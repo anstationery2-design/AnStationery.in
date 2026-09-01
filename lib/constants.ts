@@ -119,7 +119,7 @@ export const BADGES = [
   "SOLD OUT",
 ] as const;
 
-export const BANNER_VARIANTS = ["yellow", "cream", "photo", "pastel"] as const;
+export const BANNER_VARIANTS = ["green", "cream", "photo", "pastel"] as const;
 
 export const CATEGORY_ACCENTS = [
   "pastel-pink",
@@ -131,10 +131,10 @@ export const CATEGORY_ACCENTS = [
 
 export const STATUS_COLORS: Record<string, string> = {
   NEW: "bg-pastel-sky text-ink",
-  CONFIRMED: "bg-yellow-soft text-ink",
+  CONFIRMED: "bg-primary-soft text-ink",
   PROCESSING: "bg-pastel-peach text-ink",
   SHIPPED: "bg-pastel-mint text-ink",
-  OUT_FOR_DELIVERY: "bg-yellow text-ink",
+  OUT_FOR_DELIVERY: "bg-primary-soft text-primary",
   DELIVERED: "bg-badge-new/15 text-badge-new",
   CANCELLED: "bg-badge-sale/15 text-badge-sale",
 };
@@ -143,7 +143,7 @@ export const SHIPMENT_STATUS_COLORS: Record<string, string> = {
   PENDING: "bg-cream text-muted",
   PACKED: "bg-pastel-peach text-ink",
   SHIPPED: "bg-pastel-mint text-ink",
-  OUT_FOR_DELIVERY: "bg-yellow text-ink",
+  OUT_FOR_DELIVERY: "bg-primary-soft text-primary",
   DELIVERED: "bg-badge-new/15 text-badge-new",
   CANCELLED: "bg-badge-sale/15 text-badge-sale",
 };

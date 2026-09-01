@@ -73,7 +73,7 @@ export function ShopClient({
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <header className="mb-6">
-        <p className="font-accent text-xl font-bold text-yellow-deep">
+        <p className="font-accent text-xl font-bold text-primary-hover">
           browse everything cute
         </p>
         <h1 className="font-display text-3xl font-black tracking-tight sm:text-4xl">
@@ -89,7 +89,7 @@ export function ShopClient({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products..."
-            className="w-full rounded-full border border-line bg-cream py-3 pl-11 pr-4 text-sm outline-none focus:border-yellow-deep"
+            className="w-full rounded-full border border-line bg-cream py-3 pl-11 pr-4 text-sm outline-none focus:border-primary"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export function ShopClient({
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-yellow-deep"
+            className="rounded-full border border-line bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-primary"
           >
             {SORTS.map((s) => (
               <option key={s.id} value={s.id}>

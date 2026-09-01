@@ -13,7 +13,7 @@ export function Reviews({ reviews }: { reviews: ReviewItem[] }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
-        <p className="font-accent text-xl font-bold text-yellow-deep">
+        <p className="font-accent text-xl font-bold text-primary-hover">
           real smiles
         </p>
         <h2 className="font-display text-2xl font-black tracking-tight sm:text-3xl">
@@ -32,7 +32,7 @@ export function Reviews({ reviews }: { reviews: ReviewItem[] }) {
                 <Star
                   key={i}
                   className={`h-4 w-4 ${
-                    i < r.rating ? "fill-yellow text-yellow" : "text-line"
+                    i < r.rating ? "fill-yellow text-primary" : "text-line"
                   }`}
                 />
               ))}

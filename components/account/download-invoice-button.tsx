@@ -35,7 +35,7 @@ export function DownloadInvoiceButton({
     <button
       onClick={download}
       disabled={downloading}
-      className={`inline-flex items-center gap-1.5 rounded-full border-2 border-yellow px-3 py-1.5 text-xs font-bold text-ink transition hover:bg-yellow disabled:opacity-60 ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border-2 border-primary px-3 py-1.5 text-xs font-bold text-white transition hover:bg-primary-hover disabled:opacity-60 ${className}`}
     >
       <Download className="h-3.5 w-3.5" />
       {downloading ? "Preparing…" : "Invoice (PDF)"}
