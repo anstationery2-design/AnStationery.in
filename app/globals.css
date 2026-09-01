@@ -12,33 +12,28 @@
   --font-accent: var(--font-caveat), "Comic Sans MS", cursive;
 
   /* Core palette */
-  --color-background: #ffffff;
+  --color-background: #DEF4E0;
   --color-foreground: #1F2933;
 
-  --color-cream: #F7F9F6;
-  --color-cream-deep: #EAF5EA;
+  --color-cream: #FDFEFD;
+  --color-cream-deep: #DEF4E0;
 
   /* Primary Green family */
-  --color-primary: #145A2A;
-  --color-primary-hover: #0E4721;
-  --color-primary-soft: #EAF5EA;
-  --color-primary-light: #DDEEDB;
-  --color-primary-dark: #0D3B1C;
-
-  /* Secondary accent green */
-  --color-secondary: #2E7D32;
-  --color-secondary-soft: #F3F8F2;
+  --color-primary: #254134;
+  --color-primary-hover: #1A3027;
+  --color-primary-soft: #DEF4E0;
+  --color-primary-light: #C8E8CC;
+  --color-primary-dark: #0D2018;
 
   /* Ink / text */
   --color-ink: #1F2933;
-  --color-ink-soft: #5F6B63;
-  --color-muted: #8A938C;
-  --color-line: #E2E8E1;
-  --color-line-green: #B7D3B9;
+  --color-ink-soft: #4A5A4B;
+  --color-muted: #7D8A7E;
+  --color-line: #A0B0A1;
 
   /* Pastel accents (kept for category variety) */
   --color-pastel-pink: #ffd9e6;
-  --color-pastel-mint: #DDEEDB;
+  --color-pastel-mint: #C8E8CC;
   --color-pastel-lilac: #e2d4ff;
   --color-pastel-peach: #ffe0c7;
   --color-pastel-sky: #d4ecff;
@@ -86,7 +81,7 @@
    Base
    ============================================================ */
 :root {
-  --background: #ffffff;
+  --background: #DEF4E0;
   --foreground: #1F2933;
 }
 
@@ -122,7 +117,7 @@ body {
   transform: translateX(-50%) rotate(-4deg);
   width: 64px;
   height: 20px;
-  background: rgba(20, 90, 42, 0.55);
+  background: rgba(37, 65, 52, 0.55);
   background-image: linear-gradient(
       45deg,
       rgba(255, 255, 255, 0.4) 25%,
@@ -145,7 +140,7 @@ body {
 
 /* Squiggle divider */
 .squiggle {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 6 Q 15 0 30 6 T 60 6 T 90 6 T 120 6' fill='none' stroke='%23145A2A' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' viewBox='0 0 120 12'%3E%3Cpath d='M0 6 Q 15 0 30 6 T 60 6 T 90 6 T 120 6' fill='none' stroke='%23254134' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-position: center;
 }
