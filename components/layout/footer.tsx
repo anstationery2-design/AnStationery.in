@@ -9,7 +9,7 @@ import {
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-line bg-cream">
+    <footer className="relative mt-20 overflow-hidden border-t border-line bg-cream">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           {/* Brand */}
@@ -98,6 +98,22 @@ export function Footer() {
           </p>
           <p>Free delivery over {`\u20b9${SITE.freeShippingThreshold}`} &middot; 7-day returns</p>
         </div>
+      </div>
+
+      {/* Big "AN STATIONERY" wordmark — at the very bottom of the website */}
+      <div className="relative -mb-6 select-none overflow-hidden whitespace-nowrap px-2 text-center">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 translate-y-4 pl-4 font-display text-[15vw] font-black uppercase leading-none tracking-tight text-primary/15 lg:text-[11rem]"
+          style={{
+            WebkitTextStroke: "1px rgba(37,65,52,0.08)",
+          }}
+        >
+          AN Stationery
+        </div>
+        <span className="relative block font-display text-[15vw] font-black uppercase leading-none tracking-tight text-primary lg:text-[11rem]">
+          AN <span className="text-primary-hover">Stationery</span>
+        </span>
       </div>
     </footer>
   );

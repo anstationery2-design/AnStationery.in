@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ShoppingBag, Star } from "lucide-react";
 import type { Product } from "@/types";
 import { useCart } from "@/components/cart/cart-context";
+import { Card } from "@/components/ui/card";
 import {
   cn,
   discountPercent,
@@ -29,7 +30,7 @@ export function ProductCard({ product }: { product: Product }) {
   const lowStock = !soldOut && product.stock <= 5;
 
   return (
-    <div className="group lift relative flex flex-col overflow-hidden rounded-2xl border border-line bg-white">
+    <Card className="group flex h-full flex-col overflow-hidden rounded-2xl border-line/60 bg-white shadow-[0_1px_2px_rgba(20,32,28,0.04),0_8px_24px_-12px_rgba(20,32,28,0.18)] hover:-translate-y-1.5 hover:shadow-[0_2px_4px_rgba(20,32,28,0.05),0_20px_44px_-16px_rgba(20,32,28,0.32)]">
       <Link
         href={`/products/${product.slug}`}
         className="relative block aspect-square overflow-hidden bg-cream"
@@ -113,6 +114,6 @@ export function ProductCard({ product }: { product: Product }) {
           {soldOut ? "Sold Out" : "Add to Cart"}
         </button>
       </div>
-    </div>
+    </Card>
   );
 }

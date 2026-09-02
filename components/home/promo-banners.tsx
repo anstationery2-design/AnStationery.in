@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/ui/motion";
 
 const VARIANT_BG: Record<string, string> = {
   green: "bg-primary text-white",
@@ -25,16 +26,16 @@ export function PromoBanners({ banners }: { banners: BannerItem[] }) {
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <div className="grid gap-4 md:grid-cols-3">
+      <Reveal className="grid gap-4 md:grid-cols-3" delay={0}>
         {items.map((b, i) => (
-          <Link
-            key={b.id}
-            href={b.buttonUrl ?? "/shop"}
-            className={cn(
-              "tape group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 shadow-sm transition hover:shadow-lg min-h-[180px]",
-              VARIANT_BG[b.variant] ?? VARIANT_BG.green,
-            )}
-          >
+          <Reveal key={b.id} delay={i * 0.1}>
+            <Link
+              href={b.buttonUrl ?? "/shop"}
+              className={cn(
+                "tape group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 shadow-[0_1px_2px_rgba(20,32,28,0.08),0_10px_28px_-12px_rgba(20,32,28,0.35)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_2px_4px_rgba(20,32,28,0.08),0_22px_46px_-16px_rgba(20,32,28,0.5)] min-h-[180px]",
+                VARIANT_BG[b.variant] ?? VARIANT_BG.green,
+              )}
+            >
             <span className="pointer-events-none absolute -right-4 -top-4 text-7xl opacity-20 transition group-hover:scale-110">
               {Doodles[i % Doodles.length]}
             </span>
@@ -56,8 +57,9 @@ export function PromoBanners({ banners }: { banners: BannerItem[] }) {
               <ArrowRight className="h-4 w-4" />
             </span>
           </Link>
+          </Reveal>
         ))}
-      </div>
+      </Reveal>
     </section>
   );
 }
