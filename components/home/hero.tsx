@@ -6,12 +6,12 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
   if (heroProducts.length === 0) return null;
 
   return (
-    <section className="relative h-[calc(100svh_-_104px)] w-full overflow-hidden">
-      {/* Full-screen hero image — click to start shopping */}
+    <section className="relative w-full overflow-hidden">
+      {/* Full-screen-width hero image — height matches image ratio so nothing spawns off-screen */}
       <Link
         href="/shop"
         aria-label="Start shopping — view all products"
-        className="group relative block h-full w-full"
+        className="group relative block aspect-[1983/793] w-full max-h-[calc(100svh_-_104px)]"
       >
         <Image
           src="/herosection.png"
