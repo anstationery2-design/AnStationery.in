@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Gifts",
-  description: "Ready-to-gift cute hampers and boxes from AN Stationery.",
+  description: "Ready-to-gift cute hampers and boxes from A&N Stationery.",
 };
 
 export default async function GiftsPage() {

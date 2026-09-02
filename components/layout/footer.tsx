@@ -19,7 +19,7 @@ export function Footer() {
                 A
               </span>
               <span className="font-display text-xl font-black tracking-tight">
-                AN <span className="text-primary-hover">Stationery</span>
+                A&<span className="text-primary-hover">N Stationery</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
@@ -100,7 +100,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Big "AN STATIONERY" wordmark — at the very bottom of the website */}
+      {/* Big "A&N STATIONERY" wordmark — at the very bottom of the website */}
       <div className="relative -mb-6 select-none overflow-hidden whitespace-nowrap px-2 text-center">
         <div
           aria-hidden="true"
@@ -109,10 +109,10 @@ export function Footer() {
             WebkitTextStroke: "1px rgba(37,65,52,0.08)",
           }}
         >
-          AN Stationery
+          A&N Stationery
         </div>
         <span className="relative block font-display text-[15vw] font-black uppercase leading-none tracking-tight text-primary lg:text-[11rem]">
-          AN <span className="text-primary-hover">Stationery</span>
+          A&N <span className="text-primary-hover">Stationery</span>
         </span>
       </div>
     </footer>

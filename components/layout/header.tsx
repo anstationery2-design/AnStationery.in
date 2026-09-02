@@ -56,7 +56,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 lg:flex-none">
           <span className="font-display text-base font-black tracking-tight sm:text-xl">
-            AN <span className="text-primary-hover">Stationery</span>
+            A&<span className="text-primary-hover">N Stationery</span>
           </span>
         </Link>
 

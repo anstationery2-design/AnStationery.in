@@ -23,7 +23,7 @@ import { SITE } from "@/lib/constants";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "My Account | AN Stationery",
+  title: "My Account | A&N Stationery",
 };
 
 type OrderItem = {

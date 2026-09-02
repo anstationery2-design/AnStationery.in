@@ -131,7 +131,7 @@ export function CheckoutClient({ user }: { user: { name: string; email: string }
           key,
           amount: rpOrder.amount,
           currency: rpOrder.currency,
-          name: "AN Stationery",
+          name: "A&N Stationery",
           description: "Order for " + payload.customerName,
           order_id: rpOrder.id,
           prefill: { name: payload.customerName, email: payload.customerEmail, contact: payload.customerPhone },

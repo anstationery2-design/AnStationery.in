@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /* ============================================================
    shadcn/ui-style Card primitives
-   Adapted to the AN Stationery design system.
+   Adapted to the A&N Stationery design system.
    ============================================================ */
 
 const Card = React.forwardRef<

@@ -5,7 +5,7 @@ import { getCategoryBySlug, getProductsByCategory } from "@/lib/data";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Shop by Category | AN Stationery",
+  title: "Shop by Category | A&N Stationery",
   description: "Browse cute stationery and gifts by category.",
 };
 

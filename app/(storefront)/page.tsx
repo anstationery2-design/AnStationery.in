@@ -1,6 +1,5 @@
 import { Hero } from "@/components/home/hero";
 import { PromoBanners } from "@/components/home/promo-banners";
-import { Categories } from "@/components/home/categories";
 import { Stats } from "@/components/home/stats";
 import { GiftFeature } from "@/components/home/gift-feature";
 import { Benefits } from "@/components/home/benefits";
@@ -10,10 +9,8 @@ import { ProductSection } from "@/components/products/product-section";
 import { WhatsAppChatButton } from "@/components/layout/whatsapp-chat-button";
 import {
   getActiveBanners,
-  getActiveReviews,
   getAllProducts,
   getBestSellers,
-  getCategoryCounts,
   getFeatured,
   getNewArrivals,
   getPerfectGifts,
@@ -23,48 +20,21 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const [
-    trending,
-    bestSellers,
-    newArrivals,
-    freshDrops,
-    gift,
-    banners,
-    reviews,
-    counts,
-    allProducts,
-  ] = await Promise.all([
-    getTrending(),
-    getBestSellers(),
-    getNewArrivals(),
-    getFeatured(),
-    getPerfectGifts(),
-    getActiveBanners(),
-    getActiveReviews(),
-    getCategoryCounts(),
-    getAllProducts(),
-  ]);
-
-  const totalCount = counts.reduce((s, c) => s + c.count, 0);
-  const categoryCards = [
-    { id: "all", name: "All Products", slug: "shop", emoji: "\ud83d\udecd\ufe0f", accent: "pastel-sky", count: totalCount },
-    { id: "trending", name: "Trending", slug: "trending", emoji: "\ud83d\udd25", accent: "pastel-pink", count: trending.length },
-    { id: "new", name: "New Arrivals", slug: "new", emoji: "\u2728", accent: "pastel-mint", count: newArrivals.length },
-    ...counts.map((c) => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      emoji: c.emoji,
-      accent: c.accent,
-      count: c.count,
-    })),
-  ];
+  const [trending, bestSellers, newArrivals, freshDrops, gift, banners, allProducts] =
+    await Promise.all([
+      getTrending(),
+      getBestSellers(),
+      getNewArrivals(),
+      getFeatured(),
+      getPerfectGifts(),
+      getActiveBanners(),
+      getAllProducts(),
+    ]);
 
   return (
     <>
       <Hero products={allProducts.slice(0, 3)} />
       <PromoBanners banners={banners} />
-      <Categories cards={categoryCards} />
 
       <ProductSection
         eyebrow="trending right now"
@@ -102,7 +72,8 @@ export default async function Home() {
         viewAllHref="/shop"
       />
 
-      <Reviews reviews={reviews} />
+      <Reviews />
+
       <Benefits />
       <InstagramSection />
 

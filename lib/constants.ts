@@ -1,5 +1,5 @@
 export const SITE = {
-  name: "AN Stationery",
+  name: "A&N Stationery",
   tagline: "Small Things. Big Smiles.",
   description:
     "Discover trending, aesthetic and gift-worthy stationery made to brighten your everyday moments.",

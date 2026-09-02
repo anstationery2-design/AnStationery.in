@@ -44,7 +44,7 @@ export function UserLoginForm() {
             A
           </span>
           <span className="font-display text-2xl font-black tracking-tight">
-            AN <span className="text-primary-hover">Stationery</span>
+            A&<span className="text-primary-hover">N Stationery</span>
           </span>
         </Link>
 

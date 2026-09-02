@@ -3,7 +3,7 @@ import { SITE } from "@/lib/constants";
 
 export function WhatsAppChatButton() {
   const message = encodeURIComponent(
-    "Hi AN Stationery! I have a question about your products.",
+    "Hi A&N Stationery! I have a question about your products.",
   );
   const waiver = `https://wa.me/${SITE.whatsapp}?text=${message}`;
 

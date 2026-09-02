@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "New Arrivals",
-  description: "Just landed at AN Stationery.",
+  description: "Just landed at A&N Stationery.",
 };
 
 export default async function NewPage() {

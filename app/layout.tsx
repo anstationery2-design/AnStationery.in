@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     },
   ],
   creator: "dev.rohit.jadhav",
-  generator: "AN Stationery by dev.rohit.jadhav",
+  generator: "A&N Stationery by dev.rohit.jadhav",
   robots: { index: true, follow: true },
   keywords: [
     "stationery",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     "aesthetic",
     "cute",
     "India",
-    "An Stationery",
+    "A&N Stationery",
     "developed by dev.rohit.jadhav",
   ],
   icons: {
@@ -82,7 +82,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "AN Stationery",
+              name: "A&N Stationery",
               url: process.env.NEXT_PUBLIC_APP_URL || "https://anstationery.in",
               author: {
                 "@type": "Person",

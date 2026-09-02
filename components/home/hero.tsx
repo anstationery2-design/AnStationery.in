@@ -15,7 +15,7 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
       >
         <Image
           src="/herosection.png"
-          alt="AN Stationery — cute, craft & gift-worthy products"
+          alt="A&N Stationery — cute, craft & gift-worthy products"
           fill
           priority
           sizes="100vw"

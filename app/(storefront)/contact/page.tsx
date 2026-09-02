@@ -3,7 +3,7 @@ import { BENEFITS, SITE } from "@/lib/constants";
 
 export const metadata = {
   title: "Contact & Help",
-  description: "Get in touch with AN Stationery.",
+  description: "Get in touch with A&N Stationery.",
 };
 
 const FAQS = [
