@@ -19,7 +19,7 @@ export function Hero({ products: heroProducts }: { products: Product[] }) {
           fill
           priority
           sizes="100vw"
-          className="object-contain transition-transform duration-500 group-hover:scale-[1.01]"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.01]"
         />
       </Link>
     </section>
