@@ -172,13 +172,14 @@ export function ProductsTable({ products }: { products: Product[] }) {
                 <td className="hidden px-3 py-3 md:table-cell">
                   <div className="flex flex-wrap gap-1">
                     {[
-                      ["F", p.isFeatured],
-                      ["T", p.isTrending],
-                      ["N", p.isNew],
-                      ["B", p.isBestSeller],
-                    ].map(([label, on]) => (
+                      ["FD", p.isFeatured, "Fresh Drops"],
+                      ["T", p.isTrending, "Trending"],
+                      ["N", p.isNew, "New Arrival"],
+                      ["B", p.isBestSeller, "Best Seller"],
+                    ].map(([label, on, tip]) => (
                       <span
                         key={label as string}
+                        title={tip as string}
                         className={cn(
                           "grid h-5 w-5 place-items-center rounded text-[10px] font-black",
                           on ? "bg-ink text-white" : "bg-cream text-muted",

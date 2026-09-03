@@ -228,7 +228,10 @@ export function ProductForm({
       </Section>
 
       {/* Flags */}
-      <Section title="Flags & Visibility">
+      <Section
+        title="Flags & Visibility"
+        hint="Mark products to feature them on the homepage sections (Trending, New Arrivals, Fresh Drops, Best Sellers)."
+      >
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <Toggle
             label="Active"
@@ -236,22 +239,26 @@ export function ProductForm({
             onChange={(v) => set("isActive", v)}
           />
           <Toggle
-            label="Featured"
+            label="Fresh Drops"
+            sublabel="homepage"
             checked={form.isFeatured}
             onChange={(v) => set("isFeatured", v)}
           />
           <Toggle
             label="Trending"
+            sublabel="homepage"
             checked={form.isTrending}
             onChange={(v) => set("isTrending", v)}
           />
           <Toggle
             label="New Arrival"
+            sublabel="homepage"
             checked={form.isNew}
             onChange={(v) => set("isNew", v)}
           />
           <Toggle
             label="Best Seller"
+            sublabel="homepage"
             checked={form.isBestSeller}
             onChange={(v) => set("isBestSeller", v)}
           />
@@ -322,10 +329,12 @@ function Field({
 
 function Toggle({
   label,
+  sublabel,
   checked,
   onChange,
 }: {
   label: string;
+  sublabel?: string;
   checked: boolean;
   onChange: (v: boolean) => void;
 }) {
@@ -334,14 +343,21 @@ function Toggle({
       type="button"
       onClick={() => onChange(!checked)}
       className={cn(
-        "flex items-center justify-between rounded-xl border px-4 py-3 text-sm font-semibold transition",
+        "flex items-center justify-between gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition",
         checked ? "border-primary bg-primary-soft" : "border-line bg-cream",
       )}
     >
-      {label}
+      <span className="flex flex-col items-start text-left leading-tight">
+        {label}
+        {sublabel && (
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-muted">
+            {sublabel}
+          </span>
+        )}
+      </span>
       <span
         className={cn(
-          "relative h-5 w-9 rounded-full transition",
+          "relative h-5 w-9 shrink-0 rounded-full transition",
           checked ? "bg-primary-hover" : "bg-line",
         )}
       >
